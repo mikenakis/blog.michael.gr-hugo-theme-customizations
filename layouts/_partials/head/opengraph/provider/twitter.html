@@ -1,0 +1,15 @@
+{{- with .Site.Params.opengraph.twitter.site -}}
+    <meta name="twitter:site" content="@{{ . }}">
+    <meta name="twitter:creator" content="@{{ . }}">
+{{- end -}}
+
+{{- $title := partialCached "data/title" . .RelPermalink -}}
+{{/* michael.gr: The description has to be sanitized before using. */}}
+{{- $description := partialCached "data/description" . .RelPermalink | plainify | htmlUnescape | replaceRE `\n` ` ` | truncate 125 -}}
+
+<meta name="twitter:title" {{ printf "content=%q" $title | safeHTMLAttr }}>
+<meta name="twitter:description" {{ printf "content=%q" $description | safeHTMLAttr }}>
+
+{{/* michael.gr: The simplest, most consistent, and most reliable approach to link preview images is to have a single static link preview image. */}}
+<meta name="twitter:card" content="{{ .Site.Params.opengraph.twitter.card }}">
+<meta name="twitter:image" content="/link-preview.png" />
