@@ -1,0 +1,55 @@
+a {
+	text-decoration: none;
+	color: var(--link-color);
+
+	&:hover {
+		color: var(--link-color-hover);
+	}
+
+	/* michael.gr: PEARL: this class is actually used for tags in a post summary! */
+	&.link {
+		box-shadow: 0px -2px 0px rgba(var(--link-background-color), var(--link-background-opacity)) inset;
+		transition: all 0.3s ease;
+
+        /* michael.gr: I want tags in a post summary to look smaller than elsewhere. */
+        font-size: 0.8em;
+        padding: 4px 8px 4px 8px;
+
+		&:hover {
+			box-shadow: 0px calc(-1rem * var(--article-line-height)) 0px rgba(var(--link-background-color), var(--link-background-opacity-hover)) inset;
+		}
+	}
+
+    /* michael.gr: my special style for external links */
+	&.external {
+		background-image: url(/external-link.svg);
+		background-position: center right;
+		background-repeat: no-repeat;
+		background-size: 0.857em;
+		padding-right: 1em;
+	}
+
+    /* michael.gr: my special style for internal links */
+	&.internal {
+		background-image: url(/internal-link.svg);
+		background-position: center left;
+		background-repeat: no-repeat;
+		background-size: 0.857em;
+		padding-left: 1.1em;
+		margin-left: 0.3em;
+	}
+}
+
+.section-title {
+    text-transform: uppercase;
+	margin-top: 0;
+	margin-bottom: 10px;
+	display: block;
+	font-size: 1.6rem;
+	font-weight: bold;
+	color: var(--body-text-color);
+
+	a {
+		color: var(--body-text-color);
+	}
+}

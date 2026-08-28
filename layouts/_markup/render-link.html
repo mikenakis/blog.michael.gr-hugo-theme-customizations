@@ -1,0 +1,50 @@
+<!-- 
+    from https://github.com/gohugoio/hugo/blob/master/tpl/tplimpl/embedded/templates/_markup/render-link.html 
+	adjusted by me as follows:
+     - when the link is external:
+       - add 'class="external"' 
+       - and 'target="_blank"'
+     - when the link is internal:
+       - issue an error, rather than a warning, if the resource is not found.
+       - issue a warning if the text of the link does not match the title of the page.
+       - prefix the link text with "michael.gr - "
+-->
+{{- $u := urls.Parse .Destination -}}
+{{- $href := $u.String -}}
+{{- $class := "" -}}
+{{- $target := "" -}}
+{{- $text := .Text -}}
+{{- $pagePath := .Page.Path -}}
+{{- if strings.HasPrefix $u.String "#" -}}
+	{{- $href = printf "%s#%s" .PageInner.RelPermalink $u.Fragment -}}
+{{- else if $href -}}
+    {{- if $u.IsAbs -}}
+        {{- $class = "external" -}}
+        {{- $target = "_blank" -}}
+    {{- else -}}
+        {{- $class = "internal" -}}
+	    {{- $path := strings.TrimPrefix "./" $u.Path -}}
+	    {{- with or ($.PageInner.GetPage $path) ($.PageInner.Resources.Get $path) (resources.Get $path) -}}
+		    {{- $title := .Title -}}
+            {{- /* ignore media files, for which hugo uses their path as their title. */ -}}
+            {{- if eq $title $path -}}
+	            {{- $title = $text -}}
+            {{- end -}}
+            {{- if not (eq (lower $text) (lower $title)) -}}
+	            {{- warnf "Page %s: Link text '%s' should be '%s'" $pagePath $text $title -}}
+            {{- end -}}
+		    {{- $href = .RelPermalink -}}
+		    {{- with $u.RawQuery -}}{{- $href = printf "%s?%s" $href . -}}{{- end -}}
+		    {{- with $u.Fragment -}}{{- $href = printf "%s#%s" $href . -}}{{- end -}}
+	    {{- else -}}
+	        {{- errorf "'%s': item not found: '%s'" .Page.Path .Destination -}}
+	    {{- end -}}
+    {{- end -}}
+{{- end -}}
+<a 
+   {{- with $class }} class="{{ $class }}" {{- end }} 
+   href="{{ $href }}" 
+   {{- with .Title }} title="{{ . }}" {{- end }} 
+   {{- with $target }} target="{{ $target }}" {{- end }}
+   >{{ $text }}</a>
+{{- /**/ -}}

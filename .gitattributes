@@ -1,0 +1,22 @@
+* text=auto
+
+*.html text # eol=crlf
+*.css text eol=crlf
+*.scss text eol=lf
+*.json text eol=lf
+*.js text eol=crlf
+
+# PEARL: Obsidian will only save markdown files with LF and it will even convert CRLF to LF upon opening the files!
+*.md text eol=lf
+*.svg text eol=lf
+*.yaml text eol=lf
+*.base text eol=lf
+
+# Denote all files that are truly binary and should not be modified.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.mp3 binary
+*.gif binary
+*.pdf binary

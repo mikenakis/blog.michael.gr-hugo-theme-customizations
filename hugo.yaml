@@ -1,0 +1,254 @@
+# "The absolute URL of your published site including the protocol, host, path, and a trailing slash."
+baseURL: https://blog.michael.gr/
+
+# We do not set these here; instead, we pass them as arguments to Hugo.
+# publishDir: --
+# themesDir: --
+# contentDir: --
+
+locale: "en-us"
+title: Michael's Blog
+copyright: Michael Belivanakis (a.k.a. Mike Nakis)
+theme: hugo-theme-stack
+titleCaseStyle: none
+
+# taxonomies:
+#   category: categories
+#   tag: tags
+ 
+frontmatter:
+    # date: the time coordinate when the post was first published.
+    date:
+        - time_created
+        - date
+        - :git
+        # - :contentbasename
+        - :fileModTime
+    # lastmod: the time coordinate when the post was last updated.
+    lastmod:
+        - time_updated
+        - lastmod
+        - :git
+        - :fileModTime
+        - date
+    # publishDate: the time coordinate at which the post is scheduled to be published.
+    publishDate:
+        - time_to_publish
+        - date
+    # expiryDate: the time coordinate at which the post expired or is to expire. 
+    # PEARL: if you set it to 'date', hugo goes haywire with nonsensical error messages.
+    expiryDate:
+        - time_to_expire
+        - expiryDate
+
+services:
+    # GA Tracking ID
+    googleAnalytics:
+        id: TODO
+
+pagination:
+    pagerSize: 6
+
+permalinks:
+    post: /post/:contentbasename/
+    page: /:contentbasename/
+
+params:
+    mainSections:
+        - post
+    featuredImageField: image
+    rssFullContent: true
+    favicon: /favicon.svg
+
+    footer:
+        since: 2001
+
+    dateFormat:
+        # PEARL: You might think that readonly <input> elements of type "date" and "time" could be used so as to have 
+        #    the browser display date and time in whatever format the user prefers, but this does not work, because
+        #    browsers do not bother getting the user preferences for date and time format from the operating system.
+        #    So, we have no option but to pick a date and time format to display time with, and if the user does not
+        #    like it, it is the user's problem.
+        # PEARL: the format strings understood by Hugo are EXTREMELY weird.
+        # See https://gohugo.io/functions/time/format/ and https://pkg.go.dev/time#pkg-constants
+        published: "2006-01-02 Mon 15:04:05 MST"
+        lastUpdated: "2006-01-02 Mon 15:04:05 MST"
+
+    sidebar:
+        avatar: /avatar-2025-400x400.jpg
+
+    article:
+        headingAnchor: false
+        math: false
+        toc: true
+        readingTime: true
+        license:
+            enabled: false
+            default: Licensed under CC BY-NC-SA 4.0
+        list:
+            showTags: true
+
+    comments:
+        enabled: true
+        provider: intensedebate
+
+    widgets:
+        homepage:
+            - type: search
+            - type: archives
+              params:
+                  limit: 100 # 5
+#            - type: categories
+#              params:
+#                  limit: 10
+            - type: tag-cloud
+              params:
+                  limit: 100 # 10
+        page:
+            - type: toc
+
+    opengraph:
+        twitter:
+            # Your Twitter username
+            site:
+
+            # Available values: summary, summary_large_image
+            card: summary_large_image
+
+    defaultImage:
+        opengraph:
+            enabled: false
+            local: false
+            src:
+
+    colorScheme:
+        toggle: true
+        default: auto
+
+    imageProcessing:
+        cover:
+            enabled: false
+        content:
+            enabled: false
+
+### Custom menu
+### See https://stack.jimmycai.com/config/menu
+### To remove about, archive and search page menu item, remove `menu` field from their FrontMatter
+menu:
+    main: []
+
+    social:
+        - identifier: e-mail
+          name: e-Mail
+          url: /contact-via-e-mail/
+          weight: 1
+          params:
+              icon: mail
+              newTab: false
+
+        - identifier: whatsapp
+          name: WhatsApp
+          url: /contact-via-whatsapp/
+          weight: 2
+          params:
+              icon: brand-whatsapp
+              newTab: false
+
+        - identifier: github
+          name: GitHub
+          url: https://github.com/mikenakis
+          weight: 3
+          params:
+              icon: brand-github
+              newTab: true
+
+        - identifier: linkedin
+          name: LinkedIn
+          url: https://www.linkedin.com/in/mikenakis
+          weight: 4
+          params:
+              icon: brand-linkedin
+              newTab: true
+
+        - identifier: stackoverflow
+          name: Stack Overflow
+          url: https://stackoverflow.com/users/773113/mike-nakis
+          weight: 5
+          params:
+              icon: brand-stackoverflow
+              newTab: true
+
+        - identifier: twitter
+          name: Twitter
+          url: https://twitter.com/mikenakis
+          weight: 6
+          params:
+              icon: brand-twitter
+              newTab: true
+              
+#        - identifier: facebook
+#          name: Facebook
+#          url: /todo
+#          weight: 3
+#          params:
+#              icon: brand-facebook
+#              newTab: true
+
+#       - identifier: paypal
+#         name: Paypal
+#         url: https://paypal.me/mikenakis
+#         weight: 6
+#         params:
+#             icon: brand-paypal
+#              newTab: true
+
+#        - identifier: youtube
+#          name: YouTube
+#          url: https://stackoverflow.com/users/773113/mike-nakis
+#          weight: 9
+#          params:
+#              icon: brand-youtube
+#              newTab: true
+
+related:
+    includeNewer: true
+    threshold: 60
+    toLower: false
+    indices:
+        - name: tags
+          weight: 100
+
+        - name: categories
+          weight: 200
+
+markup:
+    goldmark:
+        extensions:
+            passthrough:
+                enable: true
+                delimiters:
+                    block:
+                        - - \[
+                          - \]
+                        - - $$
+                          - $$
+                    inline:
+                        - - \(
+                          - \)
+            typographer:
+                disable: true
+        renderer:
+            unsafe: true # Set to true if you have HTML content inside Markdown
+    tableOfContents:
+        startLevel: 2
+        endLevel: 5
+        ordered: true
+    highlight:
+        # Documentation for this feature is here: https://gohugo.io/content-management/syntax-highlighting/
+        anchorLineNos: true
+        codeFences: true
+        guessSyntax: false
+        lineNos: false
+        lineNumbersInTable: true
+        tabWidth: 2
+        noClasses: false

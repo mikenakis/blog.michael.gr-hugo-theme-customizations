@@ -1,0 +1,30 @@
+# PEARL: One day, cloudflare started giving me an "Asset too large" error.
+# Specifically, the error was as follows:
+#    ✘ [ERROR] Asset too large.
+#    Cloudflare Workers supports assets with sizes of up to 25 MiB. 
+#    We found a file /opt/buildhome/repo/.git/objects/pack/pack-<...>.pack with
+#    a size of 59.3 MiB.
+#    Ensure all assets in your assets directory "/opt/buildhome/repo" conform
+#    with the Workers maximum size requirement.
+# A web search for this problem yielded this discussion:
+# https://github.com/cloudflare/workerd/issues/4336
+# which suggests creating this file to solve the problem.
+
+.git
+.git/
+**/.git
+**/.git/
+**/.git/**
+
+node_modules
+node_modules/
+**/node_modules/**
+
+.wrangler
+.wrangler/
+**/.wrangler/**
+
+*.pack
+*.idx
+*.rev
+*.bitmap
