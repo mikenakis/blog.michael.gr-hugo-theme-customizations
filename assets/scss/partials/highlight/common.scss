@@ -74,17 +74,17 @@ span.line {
 }
 
 /* Keyword                  */ .chroma .k   { color: var(--primary-foreground-color); font-weight: bold; } //all keywords except var
-/* KeywordConstant          */ .chroma .kc  { color: color-mix(in oklab, var(--primary-foreground-color) 50%, #808080 50%); } //true, false
+/* KeywordConstant          */ .chroma .kc  { color: color-mix(in oklab, var(--primary-foreground-color) 50%, #888 50%); } //true, false
 /* KeywordDeclaration       */ .chroma .kd  { color: var(--primary-foreground-color); font-weight: bold; } //private, public, static
 /* KeywordNamespace         */ .chroma .kn  { color: #FF00FF; }
 /* KeywordPseudo            */ .chroma .kp  { color: #FF00FF; }
 /* KeywordReserved          */ .chroma .kr  { color: #FF00FF; }
 /* KeywordType              */ .chroma .kt  { color: var(--primary-foreground-color); font-weight: bold; } //the var keyword
-/* Name                     */ .chroma .n   { color: color-mix(in oklab, var(--primary-foreground-color) 50%, #FFFF00 50%); } //regular text
-/* NameAttribute            */ .chroma .na  { color: color-mix(in oklab, var(--primary-foreground-color) 50%, #FF8000 50%); font-weight: bold }
+/* Name                     */ .chroma .n   { color: color-mix(in oklab, var(--primary-foreground-color) 50%, #FF0 50%); } //regular text
+/* NameAttribute            */ .chroma .na  { color: color-mix(in oklab, var(--primary-foreground-color) 50%, #F80 50%); font-weight: bold }
 /* NameBuiltin              */ .chroma .nb  { color: #FF00FF; }
 /* NameBuiltinPseudo        */ .chroma .bp  { color: #FF00FF; }
-/* NameClass                */ .chroma .nc  { color: color-mix(in oklab, var(--primary-foreground-color) 50%, #ffa000 50%); } //class names, interface names
+/* NameClass                */ .chroma .nc  { color: color-mix(in oklab, var(--primary-foreground-color) 50%, #fa0 50%); } //class names, interface names
 /* NameConstant             */ .chroma .no  { color: #FF00FF; }
 /* NameDecorator            */ .chroma .nd  { color: #FF00FF; }
 /* NameEntity               */ .chroma .ni  { color: #FF00FF; }
@@ -92,7 +92,7 @@ span.line {
 /* NameFunction             */ .chroma .nf  { color: #FF00FF; }
 /* NameFunctionMagic        */ .chroma .fm  { color: #FF00FF; }
 /* NameLabel                */ .chroma .nl  { color: #FF00FF; }
-/* NameNamespace            */ .chroma .nn  { color: color-mix(in oklab, var(--primary-foreground-color) 50%, #ffa000 50%); } //namespace names
+/* NameNamespace            */ .chroma .nn  { color: color-mix(in oklab, var(--primary-foreground-color) 50%, #fa0 50%); } //namespace names
 /* NameOther                */ .chroma .nx  { color: #FF00FF; }
 /* NameProperty             */ .chroma .py  { color: #FF00FF; }
 /* NameTag                  */ .chroma .nt  { color: var(--primary-foreground-color); font-weight: bold; }
@@ -103,7 +103,7 @@ span.line {
 /* NameVariableMagic        */ .chroma .vm  { color: #FF00FF; }
 /* Literal                  */ .chroma .l   { color: #FF00FF; }
 /* LiteralDate              */ .chroma .ld  { color: #FF00FF; }
-/* LiteralString            */ .chroma .s   { color: color-mix(in oklab, var(--primary-foreground-color) 50%, #808080 50%); }
+/* LiteralString            */ .chroma .s   { color: color-mix(in oklab, var(--primary-foreground-color) 50%, #888 50%); }
 /* LiteralStringAffix       */ .chroma .sa  { color: #FF00FF; }
 /* LiteralStringBacktick    */ .chroma .sb  { color: #FF00FF; }
 /* LiteralStringChar        */ .chroma .sc  { color: #FF00FF; }
@@ -114,10 +114,10 @@ span.line {
 /* LiteralStringHeredoc     */ .chroma .sh  { color: #FF00FF; }
 /* LiteralStringInterpol    */ .chroma .si  { color: #FF00FF; }
 /* LiteralStringOther       */ .chroma .sx  { color: #FF00FF; }
-/* LiteralStringRegex       */ .chroma .sr  { color: color-mix(in oklab, var(--primary-foreground-color) 50%, #808080 50%); }
+/* LiteralStringRegex       */ .chroma .sr  { color: color-mix(in oklab, var(--primary-foreground-color) 50%, #888 50%); }
 /* LiteralStringSingle      */ .chroma .s1  { color: #FF00FF; }
 /* LiteralStringSymbol      */ .chroma .ss  { color: #FF00FF; }
-/* LiteralNumber            */ .chroma .m   { color: color-mix(in oklab, var(--primary-foreground-color) 50%, #808080 50%); }
+/* LiteralNumber            */ .chroma .m   { color: color-mix(in oklab, var(--primary-foreground-color) 50%, #888 50%); }
 /* LiteralNumberBin         */ .chroma .mb  { color: #FF00FF; }
 /* LiteralNumberFloat       */ .chroma .mf  { color: #FF00FF; }
 /* LiteralNumberHex         */ .chroma .mh  { color: #FF00FF; }
@@ -127,12 +127,12 @@ span.line {
 /* Operator                 */ .chroma .o   { color: var(--primary-foreground-color); font-weight: bold; }
 /* OperatorWord             */ .chroma .ow  { color: #FF00FF; }
 /* Punctuation              */ .chroma .p   { color: var(--primary-foreground-color); font-weight: bold; }
-/* Comment                  */ .chroma .c   { color: #FF00FF; }
+/* Comment                  */ .chroma .c   { color: color-mix(in oklab, var(--primary-foreground-color) 50%, #282 50%); } // XML comment
 /* CommentHashbang          */ .chroma .ch  { color: #FF00FF; }
-/* CommentMultiline         */ .chroma .cm  { color: color-mix(in oklab, var(--primary-foreground-color) 50%, #00FF00 50%); } // slash-star-star-slash-style comment (not necessarily multiline)
-/* CommentSingle            */ .chroma .c1  { color: color-mix(in oklab, var(--primary-foreground-color) 50%, #00FF00 50%); } // slash-slash-style comment
+/* CommentMultiline         */ .chroma .cm  { color: color-mix(in oklab, var(--primary-foreground-color) 50%, #0F0 50%); } // slash-star-star-slash-style comment (not necessarily multiline)
+/* CommentSingle            */ .chroma .c1  { color: color-mix(in oklab, var(--primary-foreground-color) 50%, #0F0 50%); } // slash-slash-style comment
 /* CommentSpecial           */ .chroma .cs  { color: #FF00FF; }
-/* CommentPreproc           */ .chroma .cp  { color: #FF00FF; }
+/* CommentPreproc           */ .chroma .cp  { color: color-mix(in oklab, var(--primary-foreground-color) 50%, #888 50%); } // XML prolog (<?xml version="1.0" encoding="UTF-8"?>)
 /* CommentPreprocFile       */ .chroma .cpf { color: #FF00FF; }
 /* Generic                  */ .chroma .g   { color: #FF00FF; }
 /* GenericDeleted           */ .chroma .gd  { color: #FF00FF; }

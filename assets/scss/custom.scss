@@ -1,8 +1,49 @@
 /* Place your custom SCSS in HUGO_SITE_FOLDER/assets/scss/custom.scss */
 
+/* michael.gr: drop cap image */
 .drop-cap-image {
 	float: left;
 	margin-top: 1rem;
 	margin-right: 1rem;
 	width: 10rem;
+}
+
+/* michael.gr: code block tab size from https://discourse.gohugo.io/t/is-using-pygmentsuseclasses-true-affecting-the-tabwidth/31648/2 */
+/*pre.chroma {*/
+code.language-xml {
+  -moz-tab-size:2;
+  -o-tab-size:2;
+  tab-size:2;
+}
+code.language-CSharp {
+  -moz-tab-size:4;
+  -o-tab-size:4;
+  tab-size:4;
+}
+
+/* michael.gr: scrollbar styles */
+@supports (-moz-appearance: none)/* and (not (-webkit-appearance: none))*/ {
+    * {
+        scrollbar-width: thin;
+        scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+    }
+    /* PEARL: `scrollbar-gutter: stable` does not work unless this magical incantation is added! */
+    ::-webkit-scrollbar {
+        width: 1px; /* PEARL: the actual value of width does not matter! */
+    }
+}
+@supports (-webkit-appearance: none) and (not (-moz-appearance: none)) {
+    ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+        background-color: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+        border-radius: 8px;
+        background-color: var(--scrollbar-thumb);
+    }
+    ::-webkit-scrollbar-track {
+        border-radius: 8px;
+        background-color: var(--scrollbar-track);
+    }
 }

@@ -1,10 +1,10 @@
-{{ define "body-class" }}
+{{- define "body-class" -}}
     article-page
-    {{/* 
+    {{- /* 
         Enable the right sidebar if
             - Widget different from 'TOC' is enabled
             - TOC is enabled and not empty
-    */}}
+    */ -}}
     {{- $HasWidgetNotTOC := false -}}
     {{- $TOCWidgetEnabled := false -}}
     {{- range .Site.Params.widgets.page -}}

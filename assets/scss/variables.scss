@@ -19,19 +19,15 @@
 
     --section-separation: 40px;
 
-    /*
     --scrollbar-thumb: color-mix(in oklab, var(--primary-background-color) 100%, var(--primary-foreground-color) 50%);
     --scrollbar-track: color-mix(in oklab, var(--primary-background-color) 100%, var(--primary-foreground-color) 20%);
-    */
 
     &[data-scheme="dark"] {
-/*
-        --body-background: #303030;
-        --accent-color: #ecf0f1;
-        --accent-color-darker: #bdc3c7;
-        --accent-color-text: #000;
-        --body-text-color: rgba(255, 255, 255, 0.7);
-*/
+
+
+
+
+
     }
 }
 
@@ -132,15 +128,13 @@
     --kbd-border-color: #dadada;
 
     &[data-scheme="dark"] {
-        /*
-        --code-background-color: #272822;
-        --code-text-color: rgba(255, 255, 255, 0.9);
 
-        --table-border-color: #717171;
-        --tr-even-background-color: #545454;
 
-        --blockquote-background-color: rgb(75 75 75);
-        */
+
+
+
+
+
     }
 }
 

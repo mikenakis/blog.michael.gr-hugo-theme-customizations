@@ -59,6 +59,7 @@ params:
     featuredImageField: image
     rssFullContent: true
     favicon: /favicon.svg
+    linkPreviewImage: /link-preview.png
 
     footer:
         since: 2001
@@ -109,8 +110,8 @@ params:
 
     opengraph:
         twitter:
-            # Your Twitter username
-            site: "@mikenakis"
+            # Your Twitter username WITHOUT THE AT-SIGN
+            site: "mikenakis"
 
             # Available values: summary, summary_large_image
             card: summary_large_image
@@ -250,5 +251,6 @@ markup:
         guessSyntax: false
         lineNos: false
         lineNumbersInTable: true
-        tabWidth: 2
+        # 'tabWidth' is useless because of 'noClasses: false', according to this: https://discourse.gohugo.io/t/is-using-pygmentsuseclasses-true-affecting-the-tabwidth/31648/2
+        # tabWidth: 4
         noClasses: false

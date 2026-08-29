@@ -340,6 +340,10 @@
         padding: 2px 4px;
         border-radius: var(--tag-border-radius);
         font-family: var(--code-font-family);
+
+        /* michael.gr: remove ligatures from the monospace font. */
+        font-variant-ligatures: none; /* PEARL: 'none' is undocumented, but it seems to work. */
+        font-feature-settings: "liga" 0;
     }
 
     a,
@@ -369,6 +373,10 @@
         line-height: 1.428571429;
         word-break: break-all;
         padding: var(--card-padding);
+
+        /* michael.gr: remove ligatures from the monospace font. */
+        font-variant-ligatures: none; /* PEARL: 'none' is undocumented, but it seems to work. */
+        font-feature-settings: "liga" 0;
 
         //  keep Codeblocks LTR
         [dir="rtl"] & {
