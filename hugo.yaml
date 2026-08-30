@@ -54,11 +54,15 @@ permalinks:
     page: /:contentbasename/
 
 params:
+    locale: en-us
     mainSections:
         - post
     featuredImageField: image
     rssFullContent: true
-    favicon: /favicon.svg
+
+    # I do not use the favicon because I specify multiple favicons in layouts/_partials/head/custom.html
+    # favicon: /favicon.svg
+
     # The link preview image must be in /assets/images and only its filename must be given here.
     linkPreviewImage: link-preview.png
 

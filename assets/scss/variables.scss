@@ -36,6 +36,7 @@
 */
 :root {
     --sys-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Droid Sans", "Helvetica Neue";
+    /* NOTE: font loading is done in /layouts/_partials/head/style.html */
     --base-font-family: "Open Sans", var(--sys-font-family), sans-serif;
     --code-font-family: "JetBrains Mono", monospace;
 }

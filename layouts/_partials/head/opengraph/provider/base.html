@@ -1,46 +1,49 @@
 {{- $title := partialCached "data/title" . .RelPermalink -}}
 {{- /* michael.gr: The description has to be sanitized before using. */ -}}
-{{- $description := partialCached "data/description" . .RelPermalink | plainify | htmlUnescape | replaceRE `[\r\n]` ` ` | truncate 125 }}
+{{- $description := partialCached "data/description" . .RelPermalink | plainify | htmlUnescape | replaceRE `[\r\n]` ` ` | truncate 125 -}}
 
-<meta property='og:title' {{ printf "content=%q" ($title | htmlEscape) | safeHTMLAttr }}>
-<meta property='og:description' {{ printf "content=%q" ($description | htmlEscape) | safeHTMLAttr }}>
-<meta property='og:url' content='{{ .Permalink }}'>
-<meta property='og:site_name' content='{{ .Site.Title }}'>
-<meta property='og:type' content='
+<meta property="og:title" {{ printf "content=%q" ($title | htmlEscape) | safeHTMLAttr }}>
+<meta property="og:description" {{ printf "content=%q" ($description | htmlEscape) | safeHTMLAttr }}>
+<meta property="og:url" content="{{ .Permalink }}">
+<meta property="og:site_name" content="{{ .Site.Title }}">
+<meta property="og:type" content="
     {{- if .IsPage -}}
         article
     {{- else -}}
         website
     {{- end -}}
-'>
+">
 
-{{- with .Params.locale -}}
-    <meta property='og:locale' content='{{ . }}'>
+{{- /* michael.gr: Screw page locale, I have one locale for the entire site. */ -}}
+{{- /* michael.gr: PEARL: even though the locale is specified at the root of hugo.yaml, it cannot be read as `.Site.Locale`; we have to use `.Site.Language.Locale` instead. */ -}}
+{{- with .Site.Language.Locale }}
+<meta property="og:locale" content="{{ . }}">
 {{- end -}}
 
-{{- if .IsPage -}}
-    <meta property='article:section' content='{{ .Section | title }}' />
-    {{- range .Params.tags -}}
-        <meta property='article:tag' content='{{ . }}' />
+{{- if .IsPage }}
+<meta property="article:section" content="{{ .Section | title }}" />
+    {{- range .Params.tags }}
+<meta property="article:tag" content="{{ . }}" />
     {{- end -}}
 {{- end -}}
 
 {{- if .IsPage -}}
-    {{- if not .Date.IsZero -}}
-        <meta property='article:published_time' content='{{ .Date.Format "2006-01-02T15:04:05-07:00" | safeHTML }}'/>
+    {{- if not .Date.IsZero }}
+<meta property="article:published_time" {{ printf "content=%q" (.Date.Format "2006-01-02T15:04:05-07:00") | safeHTMLAttr }}/>
     {{- end -}}
-    {{- if not .Lastmod.IsZero -}}
-        <meta property='article:modified_time' content='{{ .Lastmod.Format "2006-01-02T15:04:05-07:00" | safeHTML }}'/>
+    {{- if not .Lastmod.IsZero }}
+<meta property="article:modified_time" {{ printf "content=%q" (.Lastmod.Format "2006-01-02T15:04:05-07:00") | safeHTMLAttr }}/>
     {{- end -}}
 {{- else -}}
-    {{- if not .Site.Lastmod.IsZero -}}
-        <meta property='og:updated_time' content='{{ .Site.Lastmod.Format " 2006-01-02T15:04:05-07:00 " | safeHTML }}'/>
+    {{- if not .Site.Lastmod.IsZero }}
+<meta property="og:updated_time" {{ printf "content=%q" (.Site.Lastmod.Format "2006-01-02T15:04:05-07:00") | safeHTMLAttr }}/>
     {{- end -}}
 {{- end -}}
 
 {{- /* michael.gr: The simplest, most consistent, and most reliable approach to link preview images is to have a single static link preview image. */ -}}
 {{- $filename := printf "/images/%s" .Site.Params.linkPreviewImage -}}
 {{- $image := resources.Get $filename -}}
-{{ with $image }}
-<meta property="og:image" content="{{ .RelPermalink }}" />
-{{ end }}
+{{/* PEARL: some sites require og:image as Permalink instead of RelPermalink. */}}
+<meta property="og:image" content="{{ $image.Permalink }}" />
+<meta property="og:image:width" content="{{ $image.Width }}">
+<meta property="og:image:height" content="{{ $image.Height }}">
