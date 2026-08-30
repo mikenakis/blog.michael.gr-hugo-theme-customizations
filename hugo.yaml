@@ -59,7 +59,8 @@ params:
     featuredImageField: image
     rssFullContent: true
     favicon: /favicon.svg
-    linkPreviewImage: /link-preview.png
+    # The link preview image must be in /assets/images and only its filename must be given here.
+    linkPreviewImage: link-preview.png
 
     footer:
         since: 2001
@@ -245,7 +246,6 @@ markup:
         endLevel: 5
         ordered: true
     highlight:
-        # Documentation for this feature is here: https://gohugo.io/content-management/syntax-highlighting/
         anchorLineNos: true
         codeFences: true
         guessSyntax: false

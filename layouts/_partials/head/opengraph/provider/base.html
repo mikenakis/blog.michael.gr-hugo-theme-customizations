@@ -1,10 +1,9 @@
 {{- $title := partialCached "data/title" . .RelPermalink -}}
-{{/* michael.gr: The description has to be sanitized before using. */}}
-{{- $description := partialCached "data/description" . .RelPermalink | plainify | htmlUnescape | replaceRE `[\r\n]` ` ` | truncate 125 -}}
+{{- /* michael.gr: The description has to be sanitized before using. */ -}}
+{{- $description := partialCached "data/description" . .RelPermalink | plainify | htmlUnescape | replaceRE `[\r\n]` ` ` | truncate 125 }}
 
-<base href={{ .Site.BaseURL }} />
-<meta property='og:title' {{ printf "content=%q" $title | safeHTMLAttr }}>
-<meta property='og:description' {{ printf "content=%q" $description | safeHTMLAttr }}>
+<meta property='og:title' {{ printf "content=%q" ($title | htmlEscape) | safeHTMLAttr }}>
+<meta property='og:description' {{ printf "content=%q" ($description | htmlEscape) | safeHTMLAttr }}>
 <meta property='og:url' content='{{ .Permalink }}'>
 <meta property='og:site_name' content='{{ .Site.Title }}'>
 <meta property='og:type' content='
@@ -39,8 +38,9 @@
     {{- end -}}
 {{- end -}}
 
-{{/* michael.gr: The simplest, most consistent, and most reliable approach to link preview images is to have a single static link preview image. */}}
-{{- $image := partial "helper/image" (dict "Image" .Site.Params.linkPreviewImage "Resources" resources "Context" .) -}}
+{{- /* michael.gr: The simplest, most consistent, and most reliable approach to link preview images is to have a single static link preview image. */ -}}
+{{- $filename := printf "/images/%s" .Site.Params.linkPreviewImage -}}
+{{- $image := resources.Get $filename -}}
 {{ with $image }}
-<meta property="og:image" content="{{ $image.Permalink }}" this-should-be-relPermalink="{{ $image.RelPermalink }}" />
+<meta property="og:image" content="{{ .RelPermalink }}" />
 {{ end }}
