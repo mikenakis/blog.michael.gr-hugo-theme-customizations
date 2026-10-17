@@ -1,7 +1,8 @@
 <meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'>
 
-{{- $description := partialCached "data/description" . .RelPermalink -}}
+{{- /* michael.gr: The description has to be sanitized before using; otherwise `printf "%q"` turns line breaks into literal `\n`. */ -}}
+{{- $description := partialCached "data/description" . .RelPermalink | plainify | htmlUnescape | replaceRE `[\r\n]` ` ` | strings.TrimSpace | truncate 160 -}}
 <meta name='description' {{ printf "content=%q" ($description | htmlEscape) | safeHTMLAttr }}>
 {{ with .Params.Keywords }}<meta name="keywords" content="{{ delimit . ", " }}">{{ end }}
 
