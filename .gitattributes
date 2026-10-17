@@ -1,6 +1,6 @@
 * text=auto
 
-*.html text # eol=crlf
+*.html text eol=crlf
 *.css text eol=crlf
 *.scss text eol=lf
 *.json text eol=lf

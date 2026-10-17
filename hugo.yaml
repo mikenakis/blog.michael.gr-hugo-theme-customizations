@@ -46,6 +46,27 @@ services:
     googleAnalytics:
         id: TODO
 
+# Old addresses of posts are listed in the `aliases` front matter field of each post.
+# Instead of having Hugo generate an HTML redirect page for each alias, we generate a `_redirects` file, which
+# Cloudflare reads and turns into proper 301 (permanent) redirects. See layouts/home.redirects.
+disableAliases: true
+
+mediaTypes:
+    text/redirects: {}
+
+outputFormats:
+    redirects:
+        mediaType: text/redirects
+        baseName: _redirects
+        isPlainText: true
+        notAlternative: true
+
+outputs:
+    home:
+        - html
+        - rss
+        - redirects
+
 pagination:
     pagerSize: 6
 

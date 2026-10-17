@@ -1,0 +1,11 @@
+{{- /* Generates the `_redirects` file read by Cloudflare: one permanent redirect per alias of each page. */ -}}
+{{- /* PEARL: Hugo strips the trailing slash from aliases, so for an alias that looks like a directory (no file */ -}}
+{{- /*        extension) we also emit the form with the trailing slash, which is how such addresses are usually linked. */ -}}
+{{- range $page := site.Pages }}
+{{- range $page.Aliases }}
+{{ . }} {{ $page.RelPermalink }} 301
+{{- if not (path.Ext .) }}
+{{ . }}/ {{ $page.RelPermalink }} 301
+{{- end }}
+{{- end }}
+{{- end }}
