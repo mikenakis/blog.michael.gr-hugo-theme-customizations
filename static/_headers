@@ -1,0 +1,9 @@
+# Cloudflare reads this file and adds these headers to the matching responses.
+
+# The theme's JavaScript files; keep them out of search engines.
+/ts/*
+  X-Robots-Tag: noindex
+
+# The CV page and its PDF; only for those who are given the link.
+/resume-2026/*
+  X-Robots-Tag: noindex

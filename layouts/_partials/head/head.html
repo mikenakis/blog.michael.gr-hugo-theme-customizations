@@ -6,8 +6,18 @@
 <meta name='description' {{ printf "content=%q" ($description | htmlEscape) | safeHTMLAttr }}>
 {{ with .Params.Keywords }}<meta name="keywords" content="{{ delimit . ", " }}">{{ end }}
 
+{{- /* michael.gr: Append the site name to the title, unless the title already ends with it (home page, "Page N - <site name>"). (Not done in "data/title" because og:title uses it too.) */ -}}
 {{- $title := partial "data/title" . -}}
+{{- if not (strings.HasSuffix $title .Site.Title) -}}
+    {{- $title = printf "%s - %s" $title .Site.Title -}}
+{{- end -}}
 <title>{{ printf "%s" $title }}</title>
+
+{{- /* michael.gr: Keep non-content pages out of search engines: pages flagged with `noindex` in their front matter, and pages 2 and up of paginated lists. */ -}}
+{{- $paginator := partial "helper/paginator.html" . -}}
+{{- if or .Params.noindex (and $paginator $paginator.HasPrev) }}
+<meta name="robots" content="noindex, follow">
+{{- end }}
 
 {{ with .Params.canonicalUrl }}
 <link rel="canonical" href="{{ . }}">
