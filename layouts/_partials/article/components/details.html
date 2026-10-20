@@ -39,18 +39,24 @@
         {{ if $showTime }}
             <div class="inline-meta">
                 {{ if $showDate }}
-                    {{ partial "helper/icon" "date" }}
-                    <time class="article-time--published">
-                        {{- $Page.Date | time.Format $Page.Site.Params.dateFormat.published -}}
-                    </time>
+                    {{/* michael.gr: the icon-and-text class makes each icon closer to its own text than to the preceding item. */}}
+                    <span class="icon-and-text">
+                        {{ partial "helper/icon" "date" }}
+                        <time class="article-time--published">
+                            {{- $Page.Date | time.Format $Page.Site.Params.dateFormat.published -}}
+                        </time>
+                    </span>
                 {{ end }}
 
                 {{ if $showReadingTime }}
-                    {{/* michael.gr: the symbol for time lapse is the hourglass, not the clock. */}}
-                    {{ partial "helper/icon" "hourglass-empty" }}
-                    <time class="article-time--reading">
-                        {{ T "article.readingTime" $Page.ReadingTime }}
-                    </time>
+                    {{/* michael.gr: the icon-and-text class makes each icon closer to its own text than to the preceding item. */}}
+                    <span class="icon-and-text">
+                        {{/* michael.gr: the symbol for time lapse is the hourglass, not the clock. */}}
+                        {{ partial "helper/icon" "hourglass-empty" }}
+                        <time class="article-time--reading">
+                            {{ T "article.readingTime" $Page.ReadingTime }}
+                        </time>
+                    </span>
                 {{ end }}
             </div>
         {{ end }}

@@ -47,3 +47,10 @@ code.language-CSharp {
         background-color: var(--scrollbar-track);
     }
 }
+
+/* michael.gr: keep each article-meta icon close to its own text (see `icon-and-text` in details.html) */
+.article-meta .icon-and-text {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
