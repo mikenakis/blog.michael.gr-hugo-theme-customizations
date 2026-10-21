@@ -5,16 +5,7 @@
     {{- end -}}
 {{ end }}
 {{ define "main" }}
-<form action="{{ .RelPermalink }}" class="search-form"{{ with .OutputFormats.Get "json" -}} data-json="{{ .RelPermalink }}"{{- end }}>
-    <p>
-        <label>{{ T "search.title" }}</label>
-        <input name="keyword" placeholder="{{ T `search.placeholder` }}" autofocus />
-    </p>
-
-    <button title="{{ T `search.title` }}">
-        {{ partial "helper/icon" "search" }}
-    </button>
-</form>
+{{/* michael.gr: The search form has been moved to the main menu, in sidebar/left.html. */}}
 
 <div class="search-result hidden">
     <h3 class="search-result--title section-title"></h3>

@@ -74,6 +74,21 @@
             </a>
         </li>
         {{ end }}
+        {{/* michael.gr: The search box is part of the main menu, so that it is on every page, and follows the menu between the left sidebar and the hamburger panel. */}}
+        {{/* michael.gr: It is the only search box on any page, because search.tsx binds to the first ".search-form" on the page. */}}
+        {{- with index (where .Site.Pages "Layout" "search") 0 }}
+        <li class="menu-search">
+            <form action="{{ .RelPermalink }}" class="search-form widget"{{ with .OutputFormats.Get "json" }} data-json="{{ .RelPermalink }}"{{ end }}>
+                <p>
+                    <label>{{ T "search.title" }}</label>
+                    <input name="keyword" required placeholder="{{ T `search.placeholder` }}"{{ if eq $currentPage.Layout "search" }} autofocus{{ end }} />
+                    <button title="{{ T `search.title` }}">
+                        {{ partial "helper/icon" "search" }}
+                    </button>
+                </p>
+            </form>
+        </li>
+        {{- end }}
         <li class="menu-bottom-section">
             <ol class="menu">
                 {{- $currentLanguageCode := .Language.Name -}}

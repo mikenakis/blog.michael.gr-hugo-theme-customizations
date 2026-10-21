@@ -148,7 +148,7 @@ params:
 
     widgets:
         homepage:
-            - type: search
+            # michael.gr: no search widget; the search box is in the main menu (sidebar/left.html).
             - type: archives
               params:
                   limit: 100 # 5
