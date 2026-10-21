@@ -43,7 +43,7 @@
                     <span class="icon-and-text">
                         {{ partial "helper/icon" "date" }}
                         {{/* michael.gr: the date is short, so the full date and time is shown as a tooltip. */}}
-                        <time class="article-time--published" datetime="{{ $Page.Date.Format "2006-01-02T15:04:05-07:00" }}" title="{{ $Page.Date | time.Format $Page.Site.Params.dateFormat.full }}">
+                        <time class="article-time--published" datetime="{{ $Page.Date.Format "2006-01-02T15:04:05-07:00" }}" title="Created {{ $Page.Date | time.Format $Page.Site.Params.dateFormat.full }}">
                             {{- $Page.Date | time.Format $Page.Site.Params.dateFormat.published -}}
                         </time>
                     </span>
