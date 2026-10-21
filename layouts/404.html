@@ -1,0 +1,40 @@
+{{ define "main" }}
+    <div class="not-found-card">
+        <h1 class="article-title">{{ T "notFound.title" }}</h1>
+        <h2 class="article-subtitle">{{ T "notFound.subtitle" }}</h2>
+    </div>
+
+    {{/* michael.gr: The page's own search form has been removed; search.tsx binds to the one in the main menu (sidebar/left.html), so this page is a search results page, like page/search.html. */}}
+    <div class="search-result hidden">
+        <h3 class="search-result--title section-title"></h3>
+        <div class="search-result--list article-list--compact"></div>
+    </div>
+
+    <script>
+        window.searchResultTitleTemplate = "{{ T `search.resultTitle` }}"
+    </script>
+
+    {{/* michael.gr: Instead of filling in the search box, put the keywords in the address as "?keyword=…", which search.tsx reads into the main menu's box and searches at once. Number-only segments (e.g. "2019/03" of old Blogger links) and the ".html" ending are dropped. */}}
+    <script>
+        (function () {
+            const url = new URL(window.location.href);
+            if (url.searchParams.has('keyword'))
+                return;
+            const keywords = decodeURIComponent(url.pathname)
+                .replace(/\.html?$/i, '')
+                .split(/[/_-]+/)
+                .filter(word => word !== '' && !/^\d+$/.test(word))
+                .join(' ');
+            if (keywords === '')
+                return;
+            url.searchParams.set('keyword', keywords);
+            window.history.replaceState(null, '', url.toString());
+        })();
+    </script>
+
+    {{- $opts := dict "minify" hugo.IsProduction "JSXFactory" "createElement" -}}
+    {{- $searchScript := resources.Get "ts/search.tsx" | js.Build $opts -}}
+    <script type="text/javascript" src="{{ $searchScript.RelPermalink }}" defer></script>
+
+    {{ partialCached "footer/footer" . }}
+{{ end }}
