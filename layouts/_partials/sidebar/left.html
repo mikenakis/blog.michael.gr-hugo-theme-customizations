@@ -8,18 +8,13 @@
     <header>
 
         {{/* michael.gr: The dark mode toggle must be at the very top, so that it is the first thing you see. */}}
+        {{/* michael.gr: It must not have id="main-menu", because the hamburger toggles the first element with that id. */}}
         {{ if (default false .Site.Params.colorScheme.toggle) }}
-        <ol class="menu" id="main-menu">
-            <li class="menu-bottom-section">
-                <ol class="menu">
-                    {{ if .Site.Params.colorScheme.toggle }}
-                    <li id="dark-mode-toggle">
-                        {{ partial "helper/icon" "toggle-left" }}
-                        {{ partial "helper/icon" "toggle-right" }}
-                        <span>{{ T "darkMode" }}</span>
-                    </li>
-                    {{ end }}
-                </ol>
+        <ol class="menu" id="dark-mode-menu">
+            <li id="dark-mode-toggle">
+                {{ partial "helper/icon" "toggle-left" }}
+                {{ partial "helper/icon" "toggle-right" }}
+                <span>{{ T "darkMode" }}</span>
             </li>
         </ol>
         {{ end }}
