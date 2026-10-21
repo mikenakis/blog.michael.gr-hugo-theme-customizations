@@ -54,3 +54,17 @@ code.language-CSharp {
     align-items: center;
     gap: 5px;
 }
+
+/* michael.gr: notice above the IntenseDebate comments (see intensedebate.html) */
+.comments-intensedebate {
+    .comments-cookie-notice {
+        font-size: 1.4rem;
+        color: var(--card-text-color-secondary);
+        margin: 0 0 1em;
+    }
+
+    /* Two IDs, to outrank IntenseDebate's own stylesheet, which gives it a 24px top margin. */
+    #idc-container-parent #idc-container {
+        margin-top: 0;
+    }
+}
