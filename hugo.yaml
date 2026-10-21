@@ -69,6 +69,11 @@ permalinks:
     post: /post/:contentbasename/
     page: /:contentbasename/
 
+services:
+    googleAnalytics:
+        # GA4 property "blog.michael.gr" in Google account michaelnakis@gmail.com. Loaded only after cookie consent (see params.cookies).
+        id: G-H4RJK4WE5D
+
 params:
     locale: en-us
     mainSections:
@@ -115,6 +120,15 @@ params:
     comments:
         enabled: true
         provider: intensedebate
+
+    # Cookie consent banner, required by EU law for analytics cookies.
+    cookies:
+        enabled: true
+        showSettings: true
+        categories:
+            analytics: true
+            # IntenseDebate sets third-party cookies, so the theme loads the comments only after consent to this category.
+            functional: true
 
     widgets:
         homepage:

@@ -8,6 +8,11 @@
     <section class="powerby">
         Made using <b><a href="https://obsidian.md" target="_blank">Obsidian</a></b> and <b><a href="https://gohugo.io/" target="_blank">Hugo</a></b><br />
         Theme based on <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" data-version="%s">hugo-theme-stack</a></b> by <a href="https://jimmycai.com" target="_blank">Jimmy Cai</a><br />
+        {{- /* michael.gr: a way to change cookie consent later; the theme has the "cookies.footerLink" string but never shows it. */}}
+        {{- if .Site.Params.cookies.enabled }}
+        {{- /* michael.gr: also open the settings panel; "reopen" alone shows only the collapsed banner. */}}
+        <button type="button" class="cookie-settings-link" data-cookie-action="reopen" onclick="document.querySelector('#cookie-consent-banner [data-cookie-action=settings]').click()">{{ T "cookies.footerLink" }}</button>
+        {{- end }}
     </section>
 
     <script>

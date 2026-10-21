@@ -68,3 +68,13 @@ code.language-CSharp {
         margin-top: 0;
     }
 }
+
+/* michael.gr: the "Cookie settings" button in the footer (see footer.html), styled like the footer links */
+.site-footer .cookie-settings-link {
+    background: none;
+    border: 0;
+    padding: 0;
+    font: inherit;
+    color: var(--body-text-color);
+    cursor: pointer;
+}

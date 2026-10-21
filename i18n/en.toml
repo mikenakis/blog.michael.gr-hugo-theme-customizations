@@ -1,0 +1,6 @@
+# michael.gr: overrides of individual strings of the theme's i18n/en.toml; all other strings come from the theme.
+
+[cookies]
+    # michael.gr: the theme's text also mentions "embedded content", but only comments are gated behind this category.
+    [cookies.functional]
+        text = "These cookies enable website features like comments."
