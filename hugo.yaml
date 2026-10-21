@@ -93,8 +93,10 @@ params:
         #    like it, it is the user's problem.
         # PEARL: the format strings understood by Hugo are EXTREMELY weird.
         # See https://gohugo.io/functions/time/format/ and https://pkg.go.dev/time#pkg-constants
-        published: "2006-01-02 Mon 15:04:05 MST"
-        lastUpdated: "2006-01-02 Mon 15:04:05 MST"
+        published: "2006-01-02"
+        lastUpdated: "2006-01-02"
+        # michael.gr: our own addition: the full format, shown as a tooltip on the short dates above.
+        full: "2006-01-02 Mon 15:04:05 MST"
 
     sidebar:
         avatar: /avatar-2025-400x400.jpg
