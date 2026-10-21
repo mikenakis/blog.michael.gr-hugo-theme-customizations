@@ -4,6 +4,7 @@
         {{- partial "head/head.html" . -}}
         {{- block "head" . -}}{{ end }}
     </head>
+    {{- /* michael.gr: "article-page" added to every page, because our article list uses "main-article", which is only styled under "article-page". */}}
     <body class="{{ block `body-class` . }}{{ end }} article-page">
         {{- partial "head/colorScheme" . -}}
 
