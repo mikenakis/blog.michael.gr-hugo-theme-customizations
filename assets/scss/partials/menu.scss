@@ -122,7 +122,8 @@
         .hamburger-inner,
         .hamburger-inner::before,
         .hamburger-inner::after {
-            background-color: var(--accent-color);
+            /* michael.gr: our --accent-color is too faint for the 'X'; keep the hamburger's own color instead */
+            /* background-color: var(--accent-color); */
         }
     }
 }
