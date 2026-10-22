@@ -1,32 +1,15 @@
 {{/* michael.gr */}}
-{{ $image := partialCached "helper/image" (dict "Context" . "Type" "articleList") .RelPermalink "articleList" }}
 {{/* michael.gr: main-article class is necessary in order to display article header with same style as article */}}
-<article class="{{ if $image }}has-image{{ end }}main-article">
-
-    {{ if $image.exists }}
-    <div class="article-image">
-        <a href="{{ .RelPermalink }}">
-            {{ if $image.resource }}
-            {{- $thumbnail := $image.resource.Fill "800x250" -}}
-            {{- $thumbnailRetina := $image.resource.Fill "1600x500" -}}
-
-            <img src="{{ $thumbnail.RelPermalink }}"
-                 srcset="{{ $thumbnail.RelPermalink }} 800w, {{ $thumbnailRetina.RelPermalink }} 1600w"
-                 width="{{ $thumbnail.Width }}" height="{{ $thumbnail.Height }}" loading="lazy"
-                 alt="Featured image of post {{ .Title }}" />
-            {{ else }}
-            <img src="{{ $image.permalink }}" loading="lazy" alt="Featured image of post {{ .Title }}" />
-            {{ end }}
-        </a>
-    </div>
-    {{ end }}
+{{/* michael.gr: No separate cover image; the cover image is the leading image of the summary (see below). */}}
+<article class="main-article">
 
     {{/* partialCached "article/components/details" . .RelPermalink */}}
     {{ partial "article/components/header" (dict "Page" . "IsList" true) }}
 
     <!-- From https://gohugo.io/methods/page/truncated/ -->
     <section class="article-content" style="margin-top: -0.5em; margin-bottom: 1.0em;">
-        {{ .Summary }}
+        {{/* michael.gr: Make the summary's leading image (the post's cover image) a link to the post. */}}
+        {{ replaceRE `^(\s*<p>)(<img[^>]*>)` (printf `${1}<a href="%s">${2}</a>` .RelPermalink) .Summary 1 | safeHTML }}
         {{ if .Truncated }}
         <a href="{{ .RelPermalink }}">Read more &raquo;</a>
         {{ end }}

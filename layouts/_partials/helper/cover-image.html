@@ -1,0 +1,7 @@
+{{- /* michael.gr: A post's cover image is the image on the first line of its body, if there is one; the front-matter `image` field is not used,
+     so that the cover image is also shown in the post itself. Returns what helper/image returns, or an empty dict. */ -}}
+{{- $result := dict -}}
+{{- with findRESubmatch `^\s*!\[[^\]]*\]\(([^)\s]+)` .RawContent 1 -}}
+    {{- $result = partial "helper/image" (dict "Image" (index (index . 0) 1) "Resources" $.Resources "Context" $) -}}
+{{- end -}}
+{{- return $result -}}

@@ -1,4 +1,5 @@
-{{ $image := partial "helper/image" (dict "Image" .Params.image "Resources" .Resources "Context" .) }}
+{{- /* michael.gr: Use the post's leading body image instead of the front-matter `image` field. */ -}}
+{{ $image := partial "helper/cover-image" . }}
 <article class="{{ if $image }}has-image{{ end }}">
     <a href="{{ .RelPermalink }}">
         {{ if $image }}

@@ -27,7 +27,8 @@
             {{- end -}}
         </div>
 
-        {{- $image := partial "helper/image" (dict "Image" .Params.image "Resources" .Resources "Context" .) -}}
+        {{- /* michael.gr: Use the post's leading body image instead of the front-matter `image` field. */ -}}
+        {{- $image := partial "helper/cover-image" . -}}
         {{ if $image }}
         <div class="article-image">
             {{ partial "helper/thumbnail-image" (dict 
