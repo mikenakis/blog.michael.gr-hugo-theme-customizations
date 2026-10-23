@@ -33,8 +33,9 @@
     </script>
 
     {{- $opts := dict "minify" hugo.IsProduction "JSXFactory" "createElement" -}}
-    {{- $searchScript := resources.Get "ts/search.tsx" | js.Build $opts -}}
-    <script type="text/javascript" src="{{ $searchScript.RelPermalink }}" defer></script>
+    {{/* michael.gr: Fingerprinted the search script, so that browsers fetch a new version right away instead of keeping the old one for up to 4 hours (max-age=14400). */}}
+    {{- $searchScript := resources.Get "ts/search.tsx" | js.Build $opts | fingerprint -}}
+    <script type="text/javascript" src="{{ $searchScript.RelPermalink }}" integrity="{{ $searchScript.Data.Integrity }}" defer></script>
 
     {{ partialCached "footer/footer" . }}
 {{ end }}
