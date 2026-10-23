@@ -5,7 +5,8 @@ interface pageData {
     content: string,
     image?: string,
     preview: string,
-    matchCount: number
+    matchCount: number,
+    titleMatchCount: number
 }
 
 interface match {
@@ -160,7 +161,8 @@ class Search {
             let result = {
                 ...item,
                 preview: '',
-                matchCount: 0
+                matchCount: 0,
+                titleMatchCount: 0
             }
 
             const contentMatchAll = item.content.matchAll(regex);
@@ -189,12 +191,15 @@ class Search {
             }
 
             result.matchCount = titleMatches.length + contentMatches.length;
+            result.titleMatchCount = titleMatches.length;
             if (result.matchCount > 0) results.push(result);
         }
 
-        /// Result with more matches appears first
+        /* michael.gr: Results with title matches come first, ordered by title match count; then the rest, by match
+           count. Previously, results were ordered by match count only, so a post with the search term in its title
+           usually ended up far below posts that merely mention it often in their body. */
         return results.sort((a, b) => {
-            return b.matchCount - a.matchCount;
+            return (b.titleMatchCount - a.titleMatchCount) || (b.matchCount - a.matchCount);
         });
     }
 
