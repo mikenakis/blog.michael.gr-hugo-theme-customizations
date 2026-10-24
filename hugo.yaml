@@ -5,17 +5,18 @@ baseURL: https://blog.michael.gr/
 # publishDir: --
 # themesDir: --
 
-# Hugo's working directory (`--source`) needs to be `obsidian/blog.michael.gr` because Hugo reads git
-# info only from the repository of its working directory.
+# Hugo reads git info (for the "last updated" dates) only from the repository of its working directory.
+# Therefore, we set its working directory (with `--source`) to `obsidian/blog.michael.gr`. 
+# Relative mount sources are resolved against that directory.
+# Therefore, `content` is local, while `layouts`, `assets`, `static` and `i18n` are mounted from
+# `../../blog.michael.gr-hugo-theme-customizations`.
 module:
     mounts:
-        - { source: content, target: content, files: ['! **.svg'] }
-        - { source: ../../temp/preprocessed-svg/content, target: content }
+        # In the publish build, this list of mounts is replaced with the list found in hugo-publish.yaml.
+        - { source: content, target: content }
         - { source: ../../blog.michael.gr-hugo-theme-customizations/layouts, target: layouts }
-        - { source: ../../blog.michael.gr-hugo-theme-customizations/assets, target: assets, files: ['! **.svg'] }
-        - { source: ../../temp/preprocessed-svg/assets, target: assets }
-        - { source: ../../blog.michael.gr-hugo-theme-customizations/static, target: static, files: ['! **.svg'] }
-        - { source: ../../temp/preprocessed-svg/static, target: static }
+        - { source: ../../blog.michael.gr-hugo-theme-customizations/assets, target: assets }
+        - { source: ../../blog.michael.gr-hugo-theme-customizations/static, target: static }
         - { source: ../../blog.michael.gr-hugo-theme-customizations/i18n, target: i18n }
 
 # Keep Hugo's cache out of the `obsidian` repository.
