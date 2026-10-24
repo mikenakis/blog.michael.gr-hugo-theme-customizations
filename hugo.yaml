@@ -9,10 +9,13 @@ baseURL: https://blog.michael.gr/
 # info only from the repository of its working directory.
 module:
     mounts:
-        - { source: content, target: content }
+        - { source: content, target: content, files: ['! **.svg'] }
+        - { source: ../../temp/preprocessed-svg/content, target: content }
         - { source: ../../blog.michael.gr-hugo-theme-customizations/layouts, target: layouts }
-        - { source: ../../blog.michael.gr-hugo-theme-customizations/assets, target: assets }
-        - { source: ../../blog.michael.gr-hugo-theme-customizations/static, target: static }
+        - { source: ../../blog.michael.gr-hugo-theme-customizations/assets, target: assets, files: ['! **.svg'] }
+        - { source: ../../temp/preprocessed-svg/assets, target: assets }
+        - { source: ../../blog.michael.gr-hugo-theme-customizations/static, target: static, files: ['! **.svg'] }
+        - { source: ../../temp/preprocessed-svg/static, target: static }
         - { source: ../../blog.michael.gr-hugo-theme-customizations/i18n, target: i18n }
 
 # Keep Hugo's cache out of the `obsidian` repository.
