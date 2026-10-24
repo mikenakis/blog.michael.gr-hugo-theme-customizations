@@ -154,7 +154,16 @@ class Search {
             return v.trim() !== '';
         }).join('|'), 'gi');
 
+        /* michael.gr: A post is a result only if it contains every keyword, in its title or its content. Previously, a
+           post containing any one keyword was a result. Each keyword is tested with its own regex, because the matches
+           of the combined regex above can miss a keyword: with "test" and "testing", "testing" only ever matches
+           "test".
+           The keywords need no escaping here, because the filter above has already escaped them in place. */
+        const keywordRegexes = keywords.filter(v => v.trim() !== '').map(v => new RegExp(v, 'i'));
+
         for (const item of rawData) {
+            if (!keywordRegexes.every(r => r.test(item.title) || r.test(item.content))) continue;
+
             const titleMatches: match[] = [],
                 contentMatches: match[] = [];
 
