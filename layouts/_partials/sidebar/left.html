@@ -85,6 +85,8 @@
                     <button title="{{ T `search.title` }}">
                         {{ partial "helper/icon" "search" }}
                     </button>
+                    {{/* michael.gr: Added the "Whole words" checkbox inside the paragraph, so that it sits in the search box's frame, below the text field; the form submits it as "whole=1", and search.tsx reads it from the query string. */}}
+                    <label class="search-whole-words"><input type="checkbox" name="whole" value="1" /> Whole words</label>
                 </p>
             </form>
         </li>

@@ -35,8 +35,10 @@ function replaceHTMLEnt(str: string) {
     return str.replace(/[&<>"]/g, replaceTag);
 }
 
+/* michael.gr: Removed "-" from the escaped characters, because the search regexes now carry the "u" flag, which rejects
+   "\-" outside a character class as an invalid escape; outside a character class, "-" needs no escaping anyway. */
 function escapeRegExp(string: string) {
-    return string.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&');
+    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
 class Search {
@@ -47,6 +49,8 @@ class Search {
     private resultTitle: HTMLHeadElement;
     private resultTitleTemplate: string;
     private container: HTMLDivElement;
+    /* michael.gr: Added the "Whole words" checkbox (see left.html). */
+    private wholeWords: HTMLInputElement | null;
 
     constructor({ form, input, list, resultTitle, resultTitleTemplate }: {
         form: HTMLFormElement,
@@ -61,6 +65,7 @@ class Search {
         this.resultTitle = resultTitle;
         this.resultTitleTemplate = resultTitleTemplate;
         this.container = list.parentElement as HTMLDivElement;
+        this.wholeWords = form.querySelector('input[name="whole"]');
 
         /// Check if there's already value in the search input
         if (this.input.value.trim() !== '') {
@@ -149,17 +154,21 @@ class Search {
         const rawData = await this.getData();
         const results: pageData[] = [];
 
-        const regex = new RegExp(keywords.filter((v, index, arr) => {
-            arr[index] = escapeRegExp(v);
-            return v.trim() !== '';
-        }).join('|'), 'gi');
+        /* michael.gr: When "Whole words" is checked, each keyword matches only where no letter, digit or underscore
+           precedes or follows it.
+           We do not use "\b" for that, because it only knows ASCII letters, so Greek words would never match; the "u"
+           flag is what lets "\p{L}" and "\p{N}" match letters and digits of every script. */
+        const patterns = keywords.filter(v => v.trim() !== '').map(v => {
+            const escaped = escapeRegExp(v);
+            return this.wholeWords?.checked ? `(?<![\\p{L}\\p{N}_])${escaped}(?![\\p{L}\\p{N}_])` : escaped;
+        });
+        const regex = new RegExp(patterns.join('|'), 'giu');
 
         /* michael.gr: A post is a result only if it contains every keyword, in its title or its content. Previously, a
            post containing any one keyword was a result. Each keyword is tested with its own regex, because the matches
            of the combined regex above can miss a keyword: with "test" and "testing", "testing" only ever matches
-           "test".
-           The keywords need no escaping here, because the filter above has already escaped them in place. */
-        const keywordRegexes = keywords.filter(v => v.trim() !== '').map(v => new RegExp(v, 'i'));
+           "test". */
+        const keywordRegexes = patterns.map(p => new RegExp(p, 'iu'));
 
         for (const item of rawData) {
             if (!keywordRegexes.every(r => r.test(item.title) || r.test(item.content))) continue;
@@ -254,22 +263,26 @@ class Search {
         const eventHandler = (e: Event) => {
             e.preventDefault();
             const keywords = this.input.value.trim();
+            const wholeWords = this.wholeWords?.checked ?? false;
 
-            Search.updateQueryString(keywords, true);
+            Search.updateQueryString(keywords, wholeWords, true);
 
             if (keywords === '') {
                 lastSearch = '';
                 return this.clear();
             }
 
-            if (lastSearch === keywords) return;
-            lastSearch = keywords;
+            /* michael.gr: The state of "Whole words" is part of lastSearch, so that toggling it searches again. */
+            const search = `${wholeWords} ${keywords}`;
+            if (lastSearch === search) return;
+            lastSearch = search;
 
             this.doSearch(keywords.split(' '));
         }
 
         this.input.addEventListener('input', eventHandler);
         this.input.addEventListener('compositionend', eventHandler);
+        this.wholeWords?.addEventListener('change', eventHandler);
     }
 
     private clear() {
@@ -288,6 +301,7 @@ class Search {
         const pageURL = new URL(window.location.toString());
         const keywords = pageURL.searchParams.get('keyword') || '';
         this.input.value = keywords;
+        if (this.wholeWords) this.wholeWords.checked = pageURL.searchParams.get('whole') === '1';
 
         if (keywords) {
             this.doSearch(keywords.split(' '));
@@ -297,7 +311,7 @@ class Search {
         }
     }
 
-    private static updateQueryString(keywords: string, replaceState = false) {
+    private static updateQueryString(keywords: string, wholeWords: boolean, replaceState = false) {
         const pageURL = new URL(window.location.toString());
 
         if (keywords === '') {
@@ -305,6 +319,14 @@ class Search {
         }
         else {
             pageURL.searchParams.set('keyword', keywords);
+        }
+
+        /* michael.gr: "whole=1" is the query string of a search with "Whole words" checked, as submitted by the form. */
+        if (wholeWords) {
+            pageURL.searchParams.set('whole', '1');
+        }
+        else {
+            pageURL.searchParams.delete('whole');
         }
 
         if (replaceState) {

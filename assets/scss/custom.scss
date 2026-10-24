@@ -79,6 +79,35 @@ code.language-CSharp {
     cursor: pointer;
 }
 
+/* michael.gr: the "Whole words" checkbox inside the search box's frame, below the text field (see left.html).
+   The frame is the text field itself, so the text field gets extra bottom padding, and the checkbox is placed over
+   that padding, the same way the theme places the "Search" label over the top padding.
+   The theme's search.scss styles every label and input in .search-form as that label and text field, so these rules
+   undo that; they repeat .widget to outrank the theme's `.search-form.widget label/input`. */
+.search-form.widget input[name="keyword"] {
+    padding-bottom: 4rem;
+}
+
+.search-form.widget .search-whole-words {
+    top: auto;
+    bottom: var(--spacing-md);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.3rem;
+    cursor: pointer;
+
+    input {
+        width: auto;
+        padding: 0;
+        margin: 0;
+        box-shadow: none;
+        -webkit-appearance: checkbox;
+        appearance: auto;
+        cursor: pointer;
+    }
+}
+
 /* michael.gr: the dark mode toggle at the top of the left sidebar (see left.html), styled like #main-menu at md and up */
 #dark-mode-menu {
     list-style: none;
