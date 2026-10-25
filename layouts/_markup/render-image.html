@@ -1,4 +1,30 @@
 {{- $image := partial "helper/image" (dict "Resources" .Page.Resources "Image" .Destination "Context" .Page) -}}
+
+{{- /* michael.gr: read the dimensions of SVG images from the <svg> element.
+Hugo cannot read the dimensions of an SVG image, so the theme leaves them out and does not make SVG images gallery images;
+as a result, SVG images do not stretch to the edges of the card the way raster images do, and do not open in the lightbox.
+The `width` and `height` attributes are used when they are plain numbers or pixels; otherwise, the `viewBox` is used. */ -}}
+{{- if and (not $image.Width) $image.Resource (eq $image.Resource.MediaType.SubType "svg") -}}
+    {{- with index (findRE `<svg[^>]*>` $image.Resource.Content 1) 0 -}}
+        {{- $width := findRESubmatch `\swidth="([0-9.]+)(px)?"` . 1 -}}
+        {{- $height := findRESubmatch `\sheight="([0-9.]+)(px)?"` . 1 -}}
+        {{- $viewBox := findRESubmatch `\sviewBox="\s*[-0-9.]+[\s,]+[-0-9.]+[\s,]+([0-9.]+)[\s,]+([0-9.]+)\s*"` . 1 -}}
+        {{- $w := 0 -}}
+        {{- $h := 0 -}}
+        {{- if and $width $height -}}
+            {{- $w = index $width 0 1 -}}
+            {{- $h = index $height 0 1 -}}
+        {{- else if $viewBox -}}
+            {{- $w = index $viewBox 0 1 -}}
+            {{- $h = index $viewBox 0 2 -}}
+        {{- end -}}
+        {{- $w = int (math.Round (float $w)) -}}
+        {{- $h = int (math.Round (float $h)) -}}
+        {{- if and $w $h -}}
+            {{- $image = merge $image (dict "Width" $w "Height" $h) -}}
+        {{- end -}}
+    {{- end -}}
+{{- end -}}
 {{- $alt := .PlainText | safeHTML -}}
 {{- $title := .Title | markdownify -}}
 
