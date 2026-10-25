@@ -57,6 +57,10 @@
             {{- end -}}
 
             <div class="cookie-settings__actions">
+                {{/* michael.gr: [Claude] cookie preferences "Reset" button (shows the cookie banner again). */}}
+                <button class="cookie-btn cookie-btn--secondary cookie-btn--reset" data-cookie-action="reset">
+                    {{ T "cookies.reset" }}
+                </button>
                 <button class="cookie-btn cookie-btn--secondary" data-cookie-action="cancel">
                     {{ T "cookies.cancel" }}
                 </button>

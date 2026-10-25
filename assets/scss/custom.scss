@@ -79,6 +79,47 @@ code.language-CSharp {
     cursor: pointer;
 }
 
+/* michael.gr: [Claude] Make the cookie banner brighter than a card. */
+.cookie-banner__content {
+    background: oklab(from var(--card-background) calc(l + 0.044) a b);
+}
+
+/* michael.gr: */
+.cookie-btn--primary {
+    background: var(--card-text-color-main);
+    color: var(--card-background);
+
+    &:hover {
+        background: var(--card-text-color-secondary);
+    }
+}
+
+/* michael.gr: */
+.cookie-btn--secondary {
+    background: var(--card-background-selected);
+    border-color: var(--card-text-color-tertiary);
+
+    &:hover {
+        border-color: var(--card-text-color-main);
+    }
+}
+
+/* michael.gr: */
+.cookie-btn--reset {
+    margin-right: auto;
+}
+
+/* michael.gr: */
+.cookie-banner__settings-link {
+    color: var(--card-text-color-secondary);
+    text-decoration: underline;
+}
+
+/* michael.gr: */
+.cookie-banner:has(.cookie-settings:not([aria-hidden="true"])) .cookie-banner__settings-link {
+    display: none;
+}
+
 /* michael.gr: Underline footer links on hover, to match the "Cookie settings" button, which cookies.scss of the theme
    underlines on hover. */
 .site-footer .powerby a:hover {

@@ -123,6 +123,10 @@ class CookieConsent {
                 case 'reopen':
                     this.showBanner();
                     break;
+                // michael.gr: [Claude] the "Reset" button of the settings panel (see banner.html).
+                case 'reset':
+                    this.resetAll();
+                    break;
             }
         });
     }
@@ -172,6 +176,25 @@ class CookieConsent {
         this.saveState();
         this.hideBanner();
         this.dispatchConsentEvent();
+    }
+
+    // michael.gr: [Claude] Delete every cookie of the site that JavaScript can see, the consent cookie included, and reload the page.
+    // [Claude] Google Analytics sets its cookies on a parent domain (e.g. `.michael.gr`), and a cookie is deleted only by the same domain it was set with, so each cookie is expired on the host and on every parent domain.
+    // [Claude] Third-party cookies (e.g. IntenseDebate) belong to other domains, so they cannot be deleted from here.
+    // [Claude] The reload unloads analytics and comments that the old consent had loaded, and shows the banner again, since there is no consent cookie anymore.
+    private resetAll(): void {
+        const hostParts = location.hostname.split('.');
+        const domains = [''];
+        for (let i = 0; i < hostParts.length - 1; i++) {
+            domains.push('; domain=.' + hostParts.slice(i).join('.'));
+        }
+        const names = document.cookie.split('; ').map(row => row.split('=')[0]).filter(name => name);
+        for (const name of names) {
+            for (const domain of domains) {
+                document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/${domain}`;
+            }
+        }
+        location.reload();
     }
 
     private dispatchConsentEvent(): void {
