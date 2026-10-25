@@ -79,27 +79,63 @@ code.language-CSharp {
     cursor: pointer;
 }
 
-/* michael.gr: the "Whole words" checkbox inside the search box's frame, below the text field (see left.html).
-   The frame is the text field itself, so the text field gets extra bottom padding, and the checkbox is placed over
+/* michael.gr: the "Match: all / any word" radio buttons and the "Whole words only" checkbox inside the search box's
+   frame, below the text field (see left.html).
+   The frame is the text field itself, so the text field gets extra bottom padding, and the options are placed over
    that padding, the same way the theme places the "Search" label over the top padding.
+   The checkbox gets one line, and the radio buttons share the line below it.
+   The options sit as far from the bottom of the frame as the text sits in the theme's plain search box, and the bottom
+   padding is just enough for their two lines plus that margin and a 1.4rem gap below the text.
    The theme's search.scss styles every label and input in .search-form as that label and text field, so these rules
-   undo that; they repeat .widget to outrank the theme's `.search-form.widget label/input`. */
+   undo that; they repeat .widget to outrank the theme's `.search-form.widget label/input`.
+   The top padding is 0.4rem more than the theme's, to leave more room between the "Search" label and the text.
+   The end padding is as wide as the search button, which the theme places over the end of the text field, so that a
+   long search text scrolls before it reaches the icon instead of running under it. */
 .search-form.widget input[name="keyword"] {
-    padding-bottom: 4rem;
+    padding-top: calc(var(--spacing-2xl) + 0.4rem);
+    padding-inline-end: var(--button-size);
+    padding-bottom: 7.1rem;
 }
 
-.search-form.widget .search-whole-words {
-    top: auto;
+/* michael.gr: The theme makes the search button as tall as the frame, which centres its icon on the frame; the frame
+   is now taller by the options, so the button is made as tall as the frame minus the bottom padding plus the top
+   padding, which centres its icon on the text line. */
+.search-form.widget button {
+    height: calc(100% - 7.1rem + var(--spacing-2xl) + 0.4rem);
+}
+
+.search-form.widget .search-options {
+    position: absolute;
     bottom: var(--spacing-md);
+    inset-inline-start: var(--spacing-lg);
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    font-size: 1.3rem;
+    color: var(--card-text-color-tertiary);
+}
+
+.search-form.widget .search-match {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    white-space: nowrap;
+}
+
+.search-form.widget .search-options label {
+    position: static;
     display: flex;
     align-items: center;
     gap: 0.5rem;
     font-size: 1.3rem;
+    white-space: nowrap;
     cursor: pointer;
 
-    /* The checkbox is drawn in the text field's color (which the theme gives every input in .search-form) instead of the
-       browser's, whose blue appears nowhere else on the blog: unchecked, it is an outlined box; checked, the box is filled, and the tick is cut out of the fill by a mask,
-       so that the frame's background shows through it, in both light and dark mode. */
+    /* The checkbox and the radio buttons are drawn in the gray of their labels, instead of the text field's color (which
+       the theme gives every input in .search-form) or the browser's, whose blue appears nowhere else on the blog.
+       Unchecked, each is an outlined box or circle.
+       A checked checkbox is filled, and the tick is cut out of the fill by a mask, so that the frame's background shows
+       through it, in both light and dark mode; a checked radio button gets a dot. */
     input {
         flex: none;
         width: 1.3rem;
@@ -108,10 +144,21 @@ code.language-CSharp {
         margin: 0;
         border: 0.15rem solid currentColor;
         border-radius: 0.3rem;
+        color: inherit;
         background-color: transparent;
         box-shadow: none;
         cursor: pointer;
+    }
 
+    input[type="radio"] {
+        border-radius: 50%;
+
+        &:checked {
+            background: radial-gradient(circle, currentColor 0 0.3rem, transparent 0.32rem);
+        }
+    }
+
+    input[type="checkbox"] {
         &:checked {
             background-color: currentColor;
             $tick-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 13 13'%3E%3Cmask id='m'%3E%3Crect width='13' height='13' fill='white'/%3E%3Cpath d='M3 6.75l2.5 2.5 4.5-5.25' fill='none' stroke='black' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/mask%3E%3Crect width='13' height='13' rx='3' mask='url(%23m)'/%3E%3C/svg%3E");

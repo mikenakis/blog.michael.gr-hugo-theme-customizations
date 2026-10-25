@@ -49,8 +49,10 @@ class Search {
     private resultTitle: HTMLHeadElement;
     private resultTitleTemplate: string;
     private container: HTMLDivElement;
-    /* michael.gr: Added the "Whole words" checkbox (see left.html). */
+    /* michael.gr: Added the "Whole words only" checkbox (see left.html). */
     private wholeWords: HTMLInputElement | null;
+    /* michael.gr: Added the "Match: all / any word" radio buttons (see left.html); this is the "any word" one. */
+    private anyWord: HTMLInputElement | null;
 
     constructor({ form, input, list, resultTitle, resultTitleTemplate }: {
         form: HTMLFormElement,
@@ -66,6 +68,7 @@ class Search {
         this.resultTitleTemplate = resultTitleTemplate;
         this.container = list.parentElement as HTMLDivElement;
         this.wholeWords = form.querySelector('input[name="whole"]');
+        this.anyWord = form.querySelector('input[name="match"][value="any"]');
 
         /// Check if there's already value in the search input
         if (this.input.value.trim() !== '') {
@@ -154,7 +157,7 @@ class Search {
         const rawData = await this.getData();
         const results: pageData[] = [];
 
-        /* michael.gr: When "Whole words" is checked, each keyword matches only where no letter, digit or underscore
+        /* michael.gr: When "Whole words only" is checked, each keyword matches only where no letter, digit or underscore
            precedes or follows it.
            We do not use "\b" for that, because it only knows ASCII letters, so Greek words would never match; the "u"
            flag is what lets "\p{L}" and "\p{N}" match letters and digits of every script. */
@@ -164,14 +167,16 @@ class Search {
         });
         const regex = new RegExp(patterns.join('|'), 'giu');
 
-        /* michael.gr: A post is a result only if it contains every keyword, in its title or its content. Previously, a
-           post containing any one keyword was a result. Each keyword is tested with its own regex, because the matches
-           of the combined regex above can miss a keyword: with "test" and "testing", "testing" only ever matches
-           "test". */
+        /* michael.gr: A post is a result only if it contains every keyword, in its title or its content; when "Match: any
+           word" is selected, a post containing any one keyword is a result, which is how the theme originally searched. Each
+           keyword is tested with its own regex, because the matches of the combined regex above can miss a keyword:
+           with "test" and "testing", "testing" only ever matches "test". */
         const keywordRegexes = patterns.map(p => new RegExp(p, 'iu'));
+        const containsKeyword = (item: pageData) => (r: RegExp) => r.test(item.title) || r.test(item.content);
+        const anyWord = this.anyWord?.checked ?? false;
 
         for (const item of rawData) {
-            if (!keywordRegexes.every(r => r.test(item.title) || r.test(item.content))) continue;
+            if (anyWord ? !keywordRegexes.some(containsKeyword(item)) : !keywordRegexes.every(containsKeyword(item))) continue;
 
             const titleMatches: match[] = [],
                 contentMatches: match[] = [];
@@ -264,16 +269,18 @@ class Search {
             e.preventDefault();
             const keywords = this.input.value.trim();
             const wholeWords = this.wholeWords?.checked ?? false;
+            const anyWord = this.anyWord?.checked ?? false;
 
-            Search.updateQueryString(keywords, wholeWords, true);
+            Search.updateQueryString(keywords, wholeWords, anyWord, true);
 
             if (keywords === '') {
                 lastSearch = '';
                 return this.clear();
             }
 
-            /* michael.gr: The state of "Whole words" is part of lastSearch, so that toggling it searches again. */
-            const search = `${wholeWords} ${keywords}`;
+            /* michael.gr: The states of "Whole words only" and "Match" are part of lastSearch, so that changing either
+               searches again. */
+            const search = `${wholeWords} ${anyWord} ${keywords}`;
             if (lastSearch === search) return;
             lastSearch = search;
 
@@ -283,6 +290,8 @@ class Search {
         this.input.addEventListener('input', eventHandler);
         this.input.addEventListener('compositionend', eventHandler);
         this.wholeWords?.addEventListener('change', eventHandler);
+        /* michael.gr: A radio button fires "change" only when it becomes selected, so both radio buttons are listened to. */
+        this.form.querySelectorAll('input[name="match"]').forEach(r => r.addEventListener('change', eventHandler));
     }
 
     private clear() {
@@ -302,6 +311,8 @@ class Search {
         const keywords = pageURL.searchParams.get('keyword') || '';
         this.input.value = keywords;
         if (this.wholeWords) this.wholeWords.checked = pageURL.searchParams.get('whole') === '1';
+        const anyWord = pageURL.searchParams.get('match') === 'any';
+        this.form.querySelectorAll<HTMLInputElement>('input[name="match"]').forEach(r => r.checked = (r.value === 'any') === anyWord);
 
         if (keywords) {
             this.doSearch(keywords.split(' '));
@@ -311,7 +322,7 @@ class Search {
         }
     }
 
-    private static updateQueryString(keywords: string, wholeWords: boolean, replaceState = false) {
+    private static updateQueryString(keywords: string, wholeWords: boolean, anyWord: boolean, replaceState = false) {
         const pageURL = new URL(window.location.toString());
 
         if (keywords === '') {
@@ -327,6 +338,15 @@ class Search {
         }
         else {
             pageURL.searchParams.delete('whole');
+        }
+
+        /* michael.gr: "match=any" is the query string of a search with "Match: any word" selected, as submitted by the
+           form; "match=all" is the default, so it is left out. */
+        if (anyWord) {
+            pageURL.searchParams.set('match', 'any');
+        }
+        else {
+            pageURL.searchParams.delete('match');
         }
 
         if (replaceState) {

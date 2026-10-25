@@ -85,8 +85,14 @@
                     <button title="{{ T `search.title` }}">
                         {{ partial "helper/icon" "search" }}
                     </button>
-                    {{/* michael.gr: Added the "Whole words" checkbox inside the paragraph, so that it sits in the search box's frame, below the text field; the form submits it as "whole=1", and search.tsx reads it from the query string. */}}
-                    <label class="search-whole-words"><input type="checkbox" name="whole" value="1" /> Whole words</label>
+                    {{/* michael.gr: Added the "Whole words only" checkbox and the "Match: all / any word" radio buttons inside the paragraph, so that they sit in the search box's frame, below the text field; the form submits them as "match=all" or "match=any" and "whole=1", and search.tsx reads them from the query string. */}}
+                    <span class="search-options">
+                        <label><input type="checkbox" name="whole" value="1" /> Whole words only</label>
+                        <span class="search-match">Match:
+                            <label><input type="radio" name="match" value="all" checked /> all</label>
+                            <label><input type="radio" name="match" value="any" /> any word</label>
+                        </span>
+                    </span>
                 </p>
             </form>
         </li>
