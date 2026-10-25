@@ -74,14 +74,14 @@
             </a>
         </li>
         {{ end }}
-        {{/* michael.gr: The search box is part of the main menu, so that it is on every page, and follows the menu between the left sidebar and the hamburger panel. */}}
-        {{/* michael.gr: It is the only search box on any page, because search.tsx binds to the first ".search-form" on the page. */}}
+        {{/* michael.gr: I have made the search box part of the main menu. */}}
         {{- with index (where .Site.Pages "Layout" "search") 0 }}
         <li class="menu-search">
             <form action="{{ .RelPermalink }}" class="search-form widget"{{ with .OutputFormats.Get "json" }} data-json="{{ .RelPermalink }}"{{ end }}>
-                <p>
-                    <label>{{ T "search.title" }}</label>
-                    <input name="keyword" required placeholder="{{ T `search.placeholder` }}"{{ if eq $currentPage.Layout "search" }} autofocus{{ end }} />
+                {{/* michael.gr: Move the focus to the text field when the user clicks anywhere in the search panel except on the search button, an option, or the label of an option. The `for` attribute does this for the "Search" label, and the `onmousedown` handler does it for the empty parts of the panel. Without them, those clicks would not reach the text field, because the panel look is now on the `<p>` instead of the `<input>` (see custom.scss). */}}
+                <p onmousedown="if( !event.target.closest( 'label, input, button' ) ) { event.preventDefault(); this.querySelector( '#search-keyword' ).focus(); }">
+                    <label for="search-keyword">{{ T "search.title" }}</label>
+                    <input id="search-keyword" name="keyword" required placeholder="{{ T `search.placeholder` }}"{{ if eq $currentPage.Layout "search" }} autofocus{{ end }} />
                     <button title="{{ T `search.title` }}">
                         {{ partial "helper/icon" "search" }}
                     </button>

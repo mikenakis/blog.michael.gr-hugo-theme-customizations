@@ -79,41 +79,53 @@ code.language-CSharp {
     cursor: pointer;
 }
 
-/* michael.gr: the theme gives the footer links no hover feedback, while its cookies.scss underlines the "Cookie settings"
-   button on hover; so all footer links are underlined on hover, to match. */
+/* michael.gr: Underline footer links on hover, to match the "Cookie settings" button, which cookies.scss of the theme
+   underlines on hover. */
 .site-footer .powerby a:hover {
     text-decoration: underline;
 }
 
-/* michael.gr: the "Match: all / any word" radio buttons and the "Whole words only" checkbox inside the search box's
-   frame, below the text field (see left.html).
-   The frame is the text field itself, so the text field gets extra bottom padding, and the options are placed over
-   that padding, the same way the theme places the "Search" label over the top padding.
-   The checkbox gets one line, and the radio buttons share the line below it.
-   The options sit as far from the bottom of the frame as the text sits in the theme's plain search box, and the bottom
-   padding is just enough for their two lines plus that margin and a 1.4rem gap below the text.
-   The theme's search.scss styles every label and input in .search-form as that label and text field, so these rules
-   undo that; they repeat .widget to outrank the theme's `.search-form.widget label/input`.
-   The top padding is 0.4rem more than the theme's, to leave more room between the "Search" label and the text.
-   The end padding is as wide as the search button, which the theme places over the end of the text field, so that a
-   long search text scrolls before it reaches the icon instead of running under it. */
+/* michael.gr: Give the panel look to the `<p>` instead of the `<input>`, so that the panel can contain the options.
+   The top padding is 0.4rem more than in the theme, to separate the "Search" label from the text. */
+.search-form.widget p {
+    display: grid;
+    grid-template-columns: 1fr var(--button-size);
+    padding: calc(var(--spacing-2xl) + 0.4rem) 0 var(--spacing-md) var(--spacing-lg);
+    @include card-style;
+    transition: box-shadow 0.3s ease;
+
+    &:has(input[name="keyword"]:focus) {
+        box-shadow: var(--shadow-l2);
+    }
+}
+
+/* michael.gr: Strip the text field of the panel styling that the theme gives it.
+   `contain` keeps its default width of about 20 characters from widening the sidebar. */
 .search-form.widget input[name="keyword"] {
-    padding-top: calc(var(--spacing-2xl) + 0.4rem);
-    padding-inline-end: var(--button-size);
-    padding-bottom: 7.1rem;
+    display: block;
+    contain: inline-size;
+    padding: 0;
+    background: none;
+    border-radius: 0;
+    box-shadow: none;
+    transition: none;
+
+    &:focus {
+        box-shadow: none;
+    }
 }
 
-/* michael.gr: The theme makes the search button as tall as the frame, which centres its icon on the frame; the frame
-   is now taller by the options, so the button is made as tall as the frame minus the bottom padding plus the top
-   padding, which centres its icon on the text line. */
+/* michael.gr: Centre the icon of the search button on the text line; the negative margins keep the row from growing. */
 .search-form.widget button {
-    height: calc(100% - 7.1rem + var(--spacing-2xl) + 0.4rem);
+    position: static;
+    height: auto;
+    margin-block: calc(-1 * (var(--spacing-2xl) + 0.4rem));
 }
 
+/* michael.gr: Place the search options below the text. */
 .search-form.widget .search-options {
-    position: absolute;
-    bottom: var(--spacing-md);
-    inset-inline-start: var(--spacing-lg);
+    grid-column: 1 / -1;
+    margin-top: 1.4rem;
     display: flex;
     flex-direction: column;
     gap: 1.2rem;
