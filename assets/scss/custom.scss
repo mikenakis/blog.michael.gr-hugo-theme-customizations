@@ -69,16 +69,6 @@ code.language-CSharp {
     }
 }
 
-/* michael.gr: the "Cookie settings" button in the footer (see footer.html), styled like the footer links */
-.site-footer .cookie-settings-link {
-    background: none;
-    border: 0;
-    padding: 0;
-    font: inherit;
-    color: var(--body-text-color);
-    cursor: pointer;
-}
-
 /* michael.gr: [Claude] Make the cookie banner brighter than a card. */
 .cookie-banner__content {
     background: oklab(from var(--card-background) calc(l + 0.044) a b);
@@ -120,8 +110,7 @@ code.language-CSharp {
     display: none;
 }
 
-/* michael.gr: Underline footer links on hover, to match the "Cookie settings" button, which cookies.scss of the theme
-   underlines on hover. */
+/* michael.gr: [Claude] Underline footer links on hover, the "Cookie settings" link included (see footer.html). */
 .site-footer .powerby a:hover {
     text-decoration: underline;
 }

@@ -15,7 +15,9 @@
         {{- /* michael.gr: a way to change cookie consent later; the theme has the "cookies.footerLink" string but never shows it. */}}
         {{- if .Site.Params.cookies.enabled }}
         {{- /* michael.gr: also open the settings panel; "reopen" alone shows only the collapsed banner. */}}
-        <button type="button" class="cookie-settings-link" data-cookie-action="reopen" onclick="document.querySelector('#cookie-consent-banner [data-cookie-action=settings]').click()">{{ T "cookies.footerLink" }}</button>
+        {{- /* michael.gr: [Claude] Make "Cookie settings" a link, so that it gets the same style as the other footer links;
+		       `return false` keeps the click from following `href="#"` to the top of the page. */}}
+        <a href="#" data-cookie-action="reopen" onclick="document.querySelector('#cookie-consent-banner [data-cookie-action=settings]').click(); return false">{{ T "cookies.footerLink" }}</a>
         {{- end }}
     </section>
 
