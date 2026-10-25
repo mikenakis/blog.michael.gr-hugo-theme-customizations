@@ -6,8 +6,12 @@
     </section>
 
     <section class="powerby">
-        Made using <b><a href="https://obsidian.md" target="_blank">Obsidian</a></b> and <b><a href="https://gohugo.io/" target="_blank">Hugo</a></b><br />
-        Theme based on <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" data-version="%s">hugo-theme-stack</a></b> by <a href="https://jimmycai.com" target="_blank">Jimmy Cai</a><br />
+        {{- /* michael.gr: no bold on Obsidian, Hugo and hugo-theme-stack; the other footer links are not bold either. */}}
+        Made using <a href="https://obsidian.md" target="_blank">Obsidian</a> and <a href="https://gohugo.io/" target="_blank">Hugo</a><br />
+        Theme based on <a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" data-version="%s">hugo-theme-stack</a> by <a href="https://jimmycai.com" target="_blank">Jimmy Cai</a><br />
+        {{- /* michael.gr: a link to the privacy policy page, which Facebook requires for the Facebook login of the comments. */}}
+        <a href="{{ "privacy-policy/" | relURL }}">Privacy policy</a>
+        {{- if .Site.Params.cookies.enabled }} &middot;&nbsp;{{ end }}
         {{- /* michael.gr: a way to change cookie consent later; the theme has the "cookies.footerLink" string but never shows it. */}}
         {{- if .Site.Params.cookies.enabled }}
         {{- /* michael.gr: also open the settings panel; "reopen" alone shows only the collapsed banner. */}}

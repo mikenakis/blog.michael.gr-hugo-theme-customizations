@@ -79,6 +79,12 @@ code.language-CSharp {
     cursor: pointer;
 }
 
+/* michael.gr: the theme gives the footer links no hover feedback, while its cookies.scss underlines the "Cookie settings"
+   button on hover; so all footer links are underlined on hover, to match. */
+.site-footer .powerby a:hover {
+    text-decoration: underline;
+}
+
 /* michael.gr: the "Match: all / any word" radio buttons and the "Whole words only" checkbox inside the search box's
    frame, below the text field (see left.html).
    The frame is the text field itself, so the text field gets extra bottom padding, and the options are placed over
