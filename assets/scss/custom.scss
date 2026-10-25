@@ -100,13 +100,20 @@ code.language-CSharp {
 }
 
 /* michael.gr: Strip the text field of the panel styling that the theme gives it.
-   `contain` keeps its default width of about 20 characters from widening the sidebar. */
+   `contain` keeps its default width of about 20 characters from widening the sidebar.
+   michael.gr: [Claude] Give the text field the page background, so that it stands out as an inset field in the panel.
+   The negative margins cancel out its padding, so that the text stays aligned with the "Search" label and the panel
+   keeps its height.
+   The width makes up for the left margin and reaches 1rem into the column of the search button, whose icon is centred
+   with 2rem on each side, so that the field ends 1rem before the icon. */
 .search-form.widget input[name="keyword"] {
     display: block;
     contain: inline-size;
-    padding: 0;
-    background: none;
-    border-radius: 0;
+    width: calc(100% + 1.8rem);
+    padding: 0.4rem 0.8rem;
+    margin: -0.4rem 0 -0.4rem -0.8rem;
+    background: var(--body-background);
+    border-radius: var(--tag-border-radius);
     box-shadow: none;
     transition: none;
 
