@@ -7,16 +7,9 @@ a {
 	}
 
 	&.tag {
-		box-shadow: 0px -2px 0px rgba(var(--link-background-color), var(--link-background-opacity)) inset;
-		transition: all 0.3s ease;
-
         /* michael.gr: I want tags in a post summary to look smaller than elsewhere. */
         font-size: 0.8em;
         padding: 4px 8px 4px 8px;
-
-		&:hover {
-			box-shadow: 0px calc(-1rem * var(--article-line-height)) 0px rgba(var(--link-background-color), var(--link-background-opacity-hover)) inset;
-		}
 	}
 
     /* michael.gr: my special style for external links */

@@ -117,11 +117,6 @@
     --alert-caution-color: #f85149;
     --alert-caution-background: rgba(248, 81, 73, 0.1);
 
-    /* These have no effect because the style that uses them does not work for some reason. */
-    --link-background-color: 189, 195, 199;
-    --link-background-opacity: 0.5;
-    --link-background-opacity-hover: 0.7;
-
     --code-background-color: color-mix(in oklab, var(--primary-background-color) 80%, var(--code-accent-color) 15%);
     --code-text-color: var(--primary-foreground-color);
 
@@ -257,8 +252,6 @@
         --primary-background-color: hsl(240 13.5% 7.3%);
         --primary-foreground-color: hsl(0 0% 94.5%);
         --code-accent-color: hsl(240 13.5% 75%);
-
-	    --link-background-color: 89, 89, 109;
 
         --shadow-color-1: rgba(0, 0, 0, 0.2);
         --shadow-color-2: rgba(0, 0, 0, 0.3);
