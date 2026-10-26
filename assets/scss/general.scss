@@ -6,8 +6,7 @@ a {
 		color: var(--link-color-hover);
 	}
 
-	/* michael.gr: PEARL: this class is actually used for tags in a post summary! */
-	&.link {
+	&.tag {
 		box-shadow: 0px -2px 0px rgba(var(--link-background-color), var(--link-background-opacity)) inset;
 		transition: all 0.3s ease;
 
