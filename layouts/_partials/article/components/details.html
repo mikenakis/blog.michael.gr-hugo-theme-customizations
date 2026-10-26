@@ -75,7 +75,7 @@
             <div class="article-tags inline-meta">
                 {{ partial "helper/icon" "tag" }}
                 {{ range ($Page.GetTerms "tags") }}
-                    <a href="{{ .RelPermalink }}" class="tag">{{ .LinkTitle }}</a>
+                    <a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
                 {{ end }}
             </div>
         {{ end }}

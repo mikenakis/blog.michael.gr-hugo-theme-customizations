@@ -6,13 +6,7 @@ a {
 		color: var(--link-color-hover);
 	}
 
-	&.tag {
-        /* michael.gr: I want tags in a post summary to look smaller than elsewhere. */
-        font-size: 0.8em;
-        padding: 4px 8px 4px 8px;
-	}
-
-    /* michael.gr: my special style for external links */
+	/* michael.gr: my special style for external links */
 	&.external {
 		background-image: url(/external-link.svg);
 		background-position: center right;
@@ -21,7 +15,7 @@ a {
 		padding-right: 1em;
 	}
 
-    /* michael.gr: my special style for internal links */
+	/* michael.gr: my special style for internal links */
 	&.internal {
 		background-image: url(/internal-link.svg);
 		background-position: center left;
@@ -33,7 +27,7 @@ a {
 }
 
 .section-title {
-    text-transform: uppercase;
+	text-transform: uppercase;
 	margin-top: 0;
 	margin-bottom: 10px;
 	display: block;
