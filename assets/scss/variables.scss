@@ -101,7 +101,8 @@
 */
 :root {
     --blockquote-border-size: 4px;
-    --blockquote-background-color: color-mix(in oklab, var(--primary-background-color) 90%, var(--blockquote-accent-color) 10%);
+    --blockquote-background-color: color-mix(in oklab, var(--card-background), var(--primary-foreground-color) 8%);
+    --blockquote-border-color: color-mix(in oklab, var(--card-background), var(--primary-foreground-color) 25%);
 
     --heading-border-size: 4px;
 
@@ -246,7 +247,6 @@
 {
     --primary-background-color: hsl(0 0% 88.2%);
     --primary-foreground-color: hsl(0 0% 25.1%);
-    --blockquote-accent-color: hsl(41 100% 50%);
     --code-accent-color: hsl(0 0% 75%);
 
     --shadow-color-1: rgba(0, 0, 0, 0.04);
@@ -256,7 +256,6 @@
     {
         --primary-background-color: hsl(240 13.5% 7.3%);
         --primary-foreground-color: hsl(0 0% 94.5%);
-        --blockquote-accent-color: hsl(41 100% 50%);
         --code-accent-color: hsl(240 13.5% 75%);
 
 	    --link-background-color: 89, 89, 109;

@@ -282,9 +282,8 @@
     blockquote {
         position: relative;
         /* michael.gr: indent quotations on both sides, so that they are narrower than the article. */
-        /* margin: 1.5em 0; */
         margin: 1.5em var(--card-padding);
-        border-inline-start: var(--blockquote-border-size) solid var(--card-separator-color);
+        border-inline-start: var(--blockquote-border-size) solid var(--blockquote-border-color);
         padding: var(--spacing-md) calc(var(--card-padding) - var(--blockquote-border-size));
         background-color: var(--blockquote-background-color);
 
