@@ -39,6 +39,9 @@ The `width` and `height` attributes are used when they are plain numbers or pixe
     ) -}}
 {{- end -}}
 
+{{- /* michael.gr: [Claude] leave out the `data-title-escaped` attribute of the theme.
+[Claude] The gallery script of the theme shows `data-title-escaped` as a visible caption under the image, but the title of an image (e.g. the hover text of an xkcd comic) is meant to appear only as a tooltip, which the `title` attribute already provides.
+[Claude] Without `data-title-escaped`, the gallery script uses the alt text as the caption. */ -}}
 {{ partial "helper/responsive-image" (dict 
     "Resource" $image.Resource
     "Widths" (cond .Page.Site.Params.ImageProcessing.Content.Enabled .Page.Site.Params.ImageProcessing.Content.Widths nil)
@@ -48,7 +51,6 @@ The `width` and `height` attributes are used when they are plain numbers or pixe
         "height" $image.Height
         "alt" $alt
         "title" $title
-        "data-title-escaped" ($title | htmlEscape)
         "class" (cond $galleryImage "gallery-image" "")
         "loading" "lazy"
         "sizes" "(max-width: 767px) calc(100vw - 30px), (max-width: 1023px) 700px, (max-width: 1279px) 950px, 1232px"
