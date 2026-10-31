@@ -51,7 +51,7 @@
 
     --card-text-color-main: var(--primary-foreground-color);
     --card-text-color-secondary: color-mix(in oklab, var(--card-text-color-main), var(--card-text-color-tertiary));
-    --card-text-color-tertiary: #767676;
+    --card-text-color-tertiary: color-mix(in oklab, var(--card-text-color-main), var(--card-background) 40%);
     --card-separator-color: rgba(218, 218, 218, 0.5);
 
     --card-border-radius: 10px;
@@ -75,7 +75,6 @@
     &[data-scheme="dark"] {
         --card-background: #16161d;
         --card-background-selected: rgba(255, 255, 255, 0.16);
-        --card-text-color-tertiary: rgba(255, 255, 255, 0.5);
         --card-separator-color: rgba(255, 255, 255, 0.12);
     }
 }
