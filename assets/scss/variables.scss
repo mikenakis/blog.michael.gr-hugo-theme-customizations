@@ -121,7 +121,7 @@
     --code-text-color: var(--primary-foreground-color);
 
     --table-border-color: color-mix(in oklab, var(--primary-background-color) 80%, var(--primary-foreground-color) 20%);
-    --tr-even-background-color: color-mix(in srgb-linear, var(--primary-background-color) 99%, #FFFFFF 1%);
+    --tr-even-background-color: color-mix(in oklab, var(--card-background), var(--primary-foreground-color) 4%);
 
     --kbd-border-color: #dadada;
 
