@@ -44,8 +44,8 @@
 *   Card style
 */
 :root {
-    --card-background: #ececec;
-    --card-background-selected: #f6f6f6;
+    --card-background: oklab(from var(--primary-background-color) calc(l + 0.045) a b);
+    --card-background-selected: oklab(from var(--card-background) calc(l + 0.06) a b);
 
     --card-text-color-main: var(--primary-foreground-color);
     --card-text-color-secondary: color-mix(in oklab, var(--card-text-color-main), var(--card-text-color-tertiary));
@@ -68,11 +68,6 @@
 
     @include respond(md) {
         --small-card-padding: 25px;
-    }
-
-    &[data-scheme="dark"] {
-        --card-background: #16161d;
-        --card-background-selected: rgba(255, 255, 255, 0.16);
     }
 }
 
