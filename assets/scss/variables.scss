@@ -8,9 +8,7 @@
         --main-top-padding: 50px;
     }
 
-    --body-background: color-mix(in oklab, var(--primary-background-color) 98%, var(--primary-foreground-color) 2%);
-
-    --accent-color: color-mix(in oklab, var(--primary-background-color) 75%, var(--primary-foreground-color) 25%); //used for accents left of headings, and category/tag backgrounds
+    --accent-color: color-mix(in oklab, var(--primary-background-color) 77%, var(--primary-foreground-color) 23%); //used for accents left of headings, and category/tag backgrounds
     --accent-color-darker: color-mix(in oklab, var(--accent-color) 70%, #FFFFFF 30%); //used when hovering over a category/tag
     --accent-color-text: var(--body-text-color); //only used for categories/tags
     --body-text-color: color-mix(in oklab, var(--primary-foreground-color) 90%, var(--primary-background-color) 10%);
@@ -19,8 +17,8 @@
 
     --section-separation: 40px;
 
-    --scrollbar-thumb: color-mix(in oklab, var(--primary-background-color) 100%, var(--primary-foreground-color) 50%);
-    --scrollbar-track: color-mix(in oklab, var(--primary-background-color) 100%, var(--primary-foreground-color) 20%);
+    --scrollbar-thumb: color-mix(in oklab, var(--primary-background-color) 68%, var(--primary-foreground-color) 32%);
+    --scrollbar-track: color-mix(in oklab, var(--primary-background-color) 85%, var(--primary-foreground-color) 15%);
 
     &[data-scheme="dark"] {
 
@@ -116,7 +114,7 @@
     --code-background-color: color-mix(in oklab, var(--primary-background-color) 80%, var(--code-accent-color) 15%);
     --code-text-color: var(--primary-foreground-color);
 
-    --table-border-color: color-mix(in oklab, var(--primary-background-color) 80%, var(--primary-foreground-color) 20%);
+    --table-border-color: color-mix(in oklab, var(--primary-background-color) 82%, var(--primary-foreground-color) 18%);
     --tr-even-background-color: color-mix(in oklab, var(--card-background), var(--primary-foreground-color) 4%);
 
     --kbd-border-color: var(--table-border-color);
@@ -236,7 +234,7 @@
  */
 :root 
 {
-    --primary-background-color: hsl(0 0% 88.2%);
+    --primary-background-color: hsl(0 0% 86.7%);
     --primary-foreground-color: hsl(0 0% 25.1%);
     --code-accent-color: hsl(0 0% 75%);
 
@@ -245,7 +243,7 @@
 
     &[data-scheme="dark"] 
     {
-        --primary-background-color: hsl(240 13.5% 7.3%);
+        --primary-background-color: hsl(240 11.1% 8.8%);
         --primary-foreground-color: hsl(0 0% 94.5%);
         --code-accent-color: hsl(240 13.5% 75%);
 

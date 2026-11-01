@@ -9,7 +9,8 @@ html {
 }
 
 body {
-    background: var(--body-background);
+    /* michael.gr: [Claude] --body-background of the theme is replaced with --primary-background-color, which is the page background. */
+    background: var(--primary-background-color);
     margin: 0;
     font-family: var(--base-font-family);
     font-size: 1.6rem;

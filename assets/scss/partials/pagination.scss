@@ -142,7 +142,8 @@
                 height: 44px; // Explicit height for perfect alignment
                 border: 1.5px solid var(--card-separator-color);
                 border-radius: 6px;
-                background-color: var(--body-background);
+                /* michael.gr: [Claude] --body-background of the theme is replaced with --primary-background-color, which is the page background. */
+                background-color: var(--primary-background-color);
                 color: var(--card-text-color-main);
                 font-size: 1.6rem;
                 outline: none;
@@ -203,7 +204,8 @@
             margin-top: calc(var(--spacing-xs) * -1);
 
             kbd {
-                background-color: var(--body-background);
+                /* michael.gr: [Claude] --body-background of the theme is replaced with --primary-background-color, which is the page background. */
+                background-color: var(--primary-background-color);
                 border: 1px solid var(--card-separator-color);
                 border-radius: 4px;
                 padding: 3px 6px;
