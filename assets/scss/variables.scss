@@ -254,8 +254,14 @@
         --shadow-color-2: rgba(0, 0, 0, 0.3);
     }
 
-    --link-color: color-mix(in oklab, var(--primary-foreground-color) 70%, #4040FF 30%);
-    --link-color-hover: color-mix(in oklab, var(--primary-foreground-color) 10%, #4040FF 90%);
+    /* michael.gr: [Claude] The link colors take their lightness from a mix of the text and background colors, because
+       [Claude] the lightness of the text in dark mode leaves no room for chroma, so links of that lightness would be
+       [Claude] practically white.
+       [Claude] Hovering moves the lightness further toward the background, where there is room for more chroma.
+       [Claude] Each chroma stays just within the sRGB gamut at its lightness in dark mode, so that browsers do not
+       [Claude] have to clip it. */
+    --link-color: oklch(from color-mix(in oklab, var(--primary-foreground-color) 85%, var(--primary-background-color)) l 0.075 266);
+    --link-color-hover: oklch(from color-mix(in oklab, var(--primary-foreground-color) 70%, var(--primary-background-color)) l 0.13 266);
 }
 
 body
