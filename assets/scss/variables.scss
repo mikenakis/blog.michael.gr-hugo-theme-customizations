@@ -144,7 +144,9 @@
 }
 
 :root {
-    --pre-text-color: color-mix(in oklab, var(--primary-foreground-color) 50%, #808000 50%); //regular text if not covered by any highlighting rule
+    /* michael.gr: [Claude] --pre-text-color is the color of inline code, so that code blocks without a language
+       [Claude] look like inline code instead of taking a color that appears nowhere else. */
+    --pre-text-color: var(--code-text-color); //regular text if not covered by any highlighting rule
     --pre-background-color: color-mix(in oklab, var(--card-background), var(--primary-foreground-color) 8%);
 }
 
