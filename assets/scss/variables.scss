@@ -235,8 +235,17 @@
  */
 :root 
 {
-    --primary-background-color: hsl(0 0% 86.7%);
-    --primary-foreground-color: hsl(0 0% 25.1%);
+    /* michael.gr: [Claude] The background and text colors share one hue and differ in lightness and chroma, so that
+       [Claude] trying another color scheme means changing only these numbers, and every other color follows, because
+       [Claude] it is mixed from these two.
+       [Claude] The hue shows only where the chroma is above zero, which is now only the background in dark mode. */
+    --base-hue: 285;
+    --background-lightness: 0.898;
+    --background-chroma: 0;
+    --foreground-lightness: 0.372;
+    --foreground-chroma: 0;
+    --primary-background-color: oklch(var(--background-lightness) var(--background-chroma) var(--base-hue));
+    --primary-foreground-color: oklch(var(--foreground-lightness) var(--foreground-chroma) var(--base-hue));
 
     --shadow-color-1: rgba(0, 0, 0, 0.04);
     --shadow-color-2: rgba(0, 0, 0, 0.06);
@@ -247,8 +256,9 @@
 
     &[data-scheme="dark"]
     {
-        --primary-background-color: hsl(240 11.1% 8.8%);
-        --primary-foreground-color: hsl(0 0% 94.5%);
+        --background-lightness: 0.193;
+        --background-chroma: 0.01;
+        --foreground-lightness: 0.958;
 
         --shadow-color-1: rgba(0, 0, 0, 0.2);
         --shadow-color-2: rgba(0, 0, 0, 0.3);
