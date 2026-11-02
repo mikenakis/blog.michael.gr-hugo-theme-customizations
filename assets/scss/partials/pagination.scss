@@ -84,7 +84,7 @@
     padding: var(--card-padding);
 
     &::backdrop {
-        background-color: rgba(0, 0, 0, 0.4);
+        background-color: var(--backdrop-color);
         opacity: 0;
         animation: backdrop-fade-in 0.3s ease forwards;
     }

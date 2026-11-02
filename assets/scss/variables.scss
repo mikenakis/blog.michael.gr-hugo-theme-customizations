@@ -235,7 +235,9 @@
     --shadow-color-1: rgba(0, 0, 0, 0.04);
     --shadow-color-2: rgba(0, 0, 0, 0.06);
 
-    &[data-scheme="dark"] 
+    --backdrop-color: rgba(0, 0, 0, 0.4);
+
+    &[data-scheme="dark"]
     {
         --primary-background-color: hsl(240 11.1% 8.8%);
         --primary-foreground-color: hsl(0 0% 94.5%);
