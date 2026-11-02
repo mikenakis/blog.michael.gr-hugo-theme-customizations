@@ -1,0 +1,5 @@
+# [Claude] This file is added to hugo.yaml by the `hugo-snapshot` verb of Scripting, which builds the debug site once
+# [Claude] for the blog-screenshots trinket.
+# [Claude] The snapshot build gets a resource directory of its own, because it runs while a `hugo-debug` server may
+# [Claude] be using the one of hugo.yaml.
+resourceDir: ../../temp/hugo-snapshot/resources
