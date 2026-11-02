@@ -84,7 +84,8 @@
     padding: var(--card-padding);
 
     &::backdrop {
-        /* michael.gr: [Claude] The color is taken from --backdrop-color in variables.scss instead of being stated here. */
+        /* michael.gr: [Claude] The color is taken from --backdrop-color in variables.scss instead of being stated
+           [Claude] here. */
         background-color: var(--backdrop-color);
         opacity: 0;
         animation: backdrop-fade-in 0.3s ease forwards;
@@ -143,7 +144,8 @@
                 height: 44px; // Explicit height for perfect alignment
                 border: 1.5px solid var(--card-separator-color);
                 border-radius: 6px;
-                /* michael.gr: [Claude] --body-background of the theme is replaced with --primary-background-color, which is the page background. */
+                /* michael.gr: [Claude] --body-background of the theme is replaced with --primary-background-color,
+                   [Claude] which is the page background. */
                 background-color: var(--primary-background-color);
                 color: var(--card-text-color-main);
                 font-size: 1.6rem;
@@ -205,7 +207,8 @@
             margin-top: calc(var(--spacing-xs) * -1);
 
             kbd {
-                /* michael.gr: [Claude] --body-background of the theme is replaced with --primary-background-color, which is the page background. */
+                /* michael.gr: [Claude] --body-background of the theme is replaced with --primary-background-color,
+                   [Claude] which is the page background. */
                 background-color: var(--primary-background-color);
                 border: 1px solid var(--card-separator-color);
                 border-radius: 4px;
