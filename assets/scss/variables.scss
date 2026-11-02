@@ -9,7 +9,9 @@
     }
 
     --accent-color: color-mix(in oklab, var(--primary-background-color) 77%, var(--primary-foreground-color) 23%); //used for accents left of headings, and category/tag backgrounds
-    --accent-color-darker: color-mix(in oklab, var(--accent-color) 70%, #FFFFFF 30%); //used when hovering over a category/tag
+    /* michael.gr: [Claude] --accent-color-darker is mixed with the text color instead of white, so that hovering moves the color away from the page background in both modes.
+       [Claude] It keeps the name it has in the theme, even though it gets lighter in dark mode, because cookies.scss of the theme uses it too. */
+    --accent-color-darker: color-mix(in oklab, var(--accent-color) 80%, var(--primary-foreground-color) 20%); //used when hovering over a category/tag
     --accent-color-text: var(--body-text-color); //only used for categories/tags
     --body-text-color: color-mix(in oklab, var(--primary-foreground-color) 90%, var(--primary-background-color) 10%);
 
@@ -235,6 +237,7 @@
     --shadow-color-1: rgba(0, 0, 0, 0.04);
     --shadow-color-2: rgba(0, 0, 0, 0.06);
 
+    /* michael.gr: [Claude] --backdrop-color holds the color that pagination.scss of the theme states inline for the backdrop of the jump-to-page dialog, so that the explicit colors are all defined here. */
     --backdrop-color: rgba(0, 0, 0, 0.4);
 
     &[data-scheme="dark"]

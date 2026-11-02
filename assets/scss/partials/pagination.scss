@@ -84,6 +84,7 @@
     padding: var(--card-padding);
 
     &::backdrop {
+        /* michael.gr: [Claude] The color is taken from --backdrop-color in variables.scss instead of being stated here. */
         background-color: var(--backdrop-color);
         opacity: 0;
         animation: backdrop-fade-in 0.3s ease forwards;
