@@ -237,3 +237,9 @@ code.language-CSharp {
         height: 20px;
     }
 }
+
+/* michael.gr: [Claude] Make the year headings of the archives page larger than the other section titles, with which
+   [Claude] they share `.section-title`, so that the years stand out as the divisions of the page. */
+.archives-date {
+    font-size: 2.4rem;
+}
