@@ -7,6 +7,8 @@
     {{- /* michael.gr: "article-page" added to every page, because our article list uses "main-article", which is only styled under "article-page". */}}
     <body class="{{ block `body-class` . }}{{ end }} article-page">
         {{- partial "head/colorScheme" . -}}
+        {{- /* michael.gr: [Claude] The tweaks panel is for trying out colors while the Hugo server runs. */ -}}
+        {{- if hugo.IsServer }}{{ partial "tweaks-panel.html" . }}{{ end -}}
 
         {{/* The container is wider when there's any activated widget */}}
         {{- $hasWidget := false -}}

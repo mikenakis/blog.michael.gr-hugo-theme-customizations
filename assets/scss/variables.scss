@@ -8,21 +8,21 @@
         --main-top-padding: 50px;
     }
 
-    --accent-color: color-mix(in oklab, var(--primary-background-color) 77%, var(--primary-foreground-color) 23%); //used for accents left of headings, and category/tag backgrounds
+    --accent-color: color-mix(in oklab, var(--primary-background-color), var(--primary-foreground-color) calc(var(--accent-mix) * 1%)); //used for accents left of headings, and category/tag backgrounds
     /* michael.gr: [Claude] --accent-color-darker is mixed with the text color instead of white, so that hovering
        [Claude] moves the color away from the page background in both modes.
        [Claude] It keeps the name it has in the theme, even though it gets lighter in dark mode, because
        [Claude] cookies.scss of the theme uses it too. */
-    --accent-color-darker: color-mix(in oklab, var(--accent-color) 80%, var(--primary-foreground-color) 20%); //used when hovering over a category/tag
+    --accent-color-darker: color-mix(in oklab, var(--accent-color), var(--primary-foreground-color) calc(var(--accent-hover-mix) * 1%)); //used when hovering over a category/tag
     --accent-color-text: var(--body-text-color); //only used for categories/tags
-    --body-text-color: color-mix(in oklab, var(--primary-foreground-color) 90%, var(--primary-background-color) 10%);
+    --body-text-color: color-mix(in oklab, var(--primary-background-color), var(--primary-foreground-color) calc(var(--body-text-mix) * 1%));
 
     --tag-border-radius: 4px;
 
     --section-separation: 40px;
 
-    --scrollbar-thumb: color-mix(in oklab, var(--primary-background-color) 68%, var(--primary-foreground-color) 32%);
-    --scrollbar-track: color-mix(in oklab, var(--primary-background-color) 85%, var(--primary-foreground-color) 15%);
+    --scrollbar-thumb: color-mix(in oklab, var(--primary-background-color), var(--primary-foreground-color) calc(var(--scrollbar-thumb-mix) * 1%));
+    --scrollbar-track: color-mix(in oklab, var(--primary-background-color), var(--primary-foreground-color) calc(var(--scrollbar-track-mix) * 1%));
 
     &[data-scheme="dark"] {
 
@@ -48,8 +48,8 @@
 *   Card style
 */
 :root {
-    --card-background: oklab(from var(--primary-background-color) calc(l + 0.045) a b);
-    --card-background-selected: oklab(from var(--card-background) calc(l + 0.06) a b);
+    --card-background: oklab(from var(--primary-background-color) calc(l + var(--card-lift)) a b);
+    --card-background-selected: oklab(from var(--card-background) calc(l + var(--card-lift)) a b);
 
     --card-text-color-main: var(--primary-foreground-color);
     --card-text-color-secondary: color-mix(in oklab, var(--card-text-color-main), var(--card-text-color-tertiary));
@@ -94,8 +94,8 @@
 */
 :root {
     --blockquote-border-size: 4px;
-    --blockquote-background-color: color-mix(in oklab, var(--card-background), var(--primary-foreground-color) 8%);
-    --blockquote-border-color: color-mix(in oklab, var(--card-background), var(--primary-foreground-color) 25%);
+    --blockquote-background-color: color-mix(in oklab, var(--card-background), var(--primary-foreground-color) calc(var(--blockquote-background-mix) * 1%));
+    --blockquote-border-color: color-mix(in oklab, var(--card-background), var(--primary-foreground-color) calc(var(--blockquote-border-mix) * 1%));
 
     --heading-border-size: 4px;
 
@@ -110,11 +110,11 @@
     --alert-caution-color: #f85149;
     --alert-caution-background: rgba(248, 81, 73, 0.1);
 
-    --code-background-color: color-mix(in oklab, var(--card-background), var(--primary-foreground-color) 10%);
+    --code-background-color: color-mix(in oklab, var(--card-background), var(--primary-foreground-color) calc(var(--code-background-mix) * 1%));
     --code-text-color: var(--primary-foreground-color);
 
-    --table-border-color: color-mix(in oklab, var(--primary-background-color) 82%, var(--primary-foreground-color) 18%);
-    --tr-even-background-color: color-mix(in oklab, var(--card-background), var(--primary-foreground-color) 4%);
+    --table-border-color: color-mix(in oklab, var(--primary-background-color), var(--primary-foreground-color) calc(var(--table-border-mix) * 1%));
+    --tr-even-background-color: color-mix(in oklab, var(--card-background), var(--primary-foreground-color) calc(var(--table-even-row-mix) * 1%));
 
     --kbd-border-color: var(--table-border-color);
 
@@ -134,20 +134,24 @@
 *   Thanks to https://www.figma.com/community/plugin/744987207861965946/Shadow-picker
 */
 :root {
-    --shadow-l1-y: 4px;
-    --shadow-l1-blur: 8px;
-    --shadow-l2-y: 10px;
-    --shadow-l2-blur: 20px;
+    /* michael.gr: [Claude] The offset and blur of the soft layer of the shadows come from --shadow-offset and
+       [Claude] --shadow-blur, in pixels, and the hover shadow has --shadow-hover-scale times those of the normal one.
+       [Claude] The thin outline layers take --shadow-edge-color instead of the color of the soft layer, so that the
+       [Claude] soft layer can be made stronger without the outline turning into a dark line around the card. */
+    --shadow-l1-y: calc(var(--shadow-offset) * 1px);
+    --shadow-l1-blur: calc(var(--shadow-blur) * 1px);
+    --shadow-l2-y: calc(var(--shadow-offset) * var(--shadow-hover-scale) * 1px);
+    --shadow-l2-blur: calc(var(--shadow-blur) * var(--shadow-hover-scale) * 1px);
 
-    --shadow-l1: 0px var(--shadow-l1-y) var(--shadow-l1-blur) var(--shadow-color-1), 0px 0px 2px var(--shadow-color-2), 0px 0px 1px var(--shadow-color-1);
-    --shadow-l2: 0px var(--shadow-l2-y) var(--shadow-l2-blur) var(--shadow-color-1), 0px 2px 6px var(--shadow-color-1), 0px 0px 1px var(--shadow-color-1);
+    --shadow-l1: 0px var(--shadow-l1-y) var(--shadow-l1-blur) var(--shadow-color-1), 0px 0px 2px var(--shadow-color-2), 0px 0px 1px var(--shadow-edge-color);
+    --shadow-l2: 0px var(--shadow-l2-y) var(--shadow-l2-blur) var(--shadow-color-1), 0px 2px 6px var(--shadow-color-1), 0px 0px 1px var(--shadow-edge-color);
 }
 
 :root {
     /* michael.gr: [Claude] --pre-text-color is the color of inline code, so that code blocks without a language
        [Claude] look like inline code instead of taking a color that appears nowhere else. */
     --pre-text-color: var(--code-text-color); //regular text if not covered by any highlighting rule
-    --pre-background-color: color-mix(in oklab, var(--card-background), var(--primary-foreground-color) 8%);
+    --pre-background-color: color-mix(in oklab, var(--card-background), var(--primary-foreground-color) calc(var(--pre-background-mix) * 1%));
 }
 
 [data-scheme="light"] {
@@ -235,20 +239,64 @@
  */
 :root 
 {
-    /* michael.gr: [Claude] The background and text colors share one hue and differ in lightness and chroma, so that
-       [Claude] trying another color scheme means changing only these numbers, and every other color follows, because
-       [Claude] it is mixed from these two.
-       [Claude] The hue shows only where the chroma is above zero, which is now only the background in dark mode. */
-    --base-hue: 285;
+    /* michael.gr: [Claude] The background and text colors are each defined by a lightness, a chroma and a hue, so
+       [Claude] that trying another color scheme means changing only these numbers, and every other color follows,
+       [Claude] because it is mixed from these two.
+       [Claude] A hue shows only where its chroma is above zero, which is now only the background in dark mode.
+       [Claude] While the Hugo server runs, the tweaks panel (`_partials/tweaks-panel.html`) overrides these numbers,
+       [Claude] and the other numbers at the top of this block, in the browser. */
+    --background-hue: 285;
     --background-lightness: 0.898;
     --background-chroma: 0;
+    --foreground-hue: 285;
     --foreground-lightness: 0.372;
     --foreground-chroma: 0;
-    --primary-background-color: oklch(var(--background-lightness) var(--background-chroma) var(--base-hue));
-    --primary-foreground-color: oklch(var(--foreground-lightness) var(--foreground-chroma) var(--base-hue));
+    --primary-background-color: oklch(var(--background-lightness) var(--background-chroma) var(--background-hue));
+    --primary-foreground-color: oklch(var(--foreground-lightness) var(--foreground-chroma) var(--foreground-hue));
 
-    --shadow-color-1: rgba(0, 0, 0, 0.04);
-    --shadow-color-2: rgba(0, 0, 0, 0.06);
+    /* michael.gr: [Claude] The soft layers of the shadows are black at --shadow-opacity, and the thin outline layers
+       [Claude] are black at --shadow-edge-opacity, the 2px one half again as opaque, as in the theme. */
+    --shadow-opacity: 0.04;
+    --shadow-edge-opacity: 0.04;
+    --shadow-blur: 8;
+    --shadow-offset: 4;
+    --shadow-hover-scale: 2.5;
+    --shadow-color-1: rgb(0 0 0 / var(--shadow-opacity));
+    --shadow-color-2: rgb(0 0 0 / calc(var(--shadow-edge-opacity) * 1.5));
+    --shadow-edge-color: rgb(0 0 0 / var(--shadow-edge-opacity));
+
+    /* michael.gr: [Claude] Cards are lighter than the page background by --card-lift, in oklab lightness, and selected
+       [Claude] cards are lighter than cards by the same amount. */
+    --card-lift: 0.045;
+
+    /* michael.gr: [Claude] Each of the colors derived from the background and text colors states the share of the
+       [Claude] text color in it, as a percentage, in one of these numbers, so that the contrast of each one can be
+       [Claude] tried out without finding its definition.
+       [Claude] The colors mixed into the card background instead of the page background are those of blockquotes,
+       [Claude] code, `pre` and even table rows. */
+    --body-text-mix: 90;
+    --accent-mix: 23;
+    --accent-hover-mix: 20;
+    --blockquote-background-mix: 8;
+    --blockquote-border-mix: 25;
+    --code-background-mix: 10;
+    --pre-background-mix: 8;
+    --table-border-mix: 18;
+    --table-even-row-mix: 4;
+    --scrollbar-thumb-mix: 32;
+    --scrollbar-track-mix: 15;
+
+    /* michael.gr: [Claude] The link colors take their lightness from a mix of the text and background colors, because
+       [Claude] the lightness of the text in dark mode leaves no room for chroma, so links of that lightness would be
+       [Claude] practically white.
+       [Claude] Hovering moves the lightness further toward the background, where there is room for more chroma.
+       [Claude] Each chroma stays just within the sRGB gamut at its lightness in dark mode, so that browsers do not
+       [Claude] have to clip it. */
+    --link-mix: 85;
+    --link-hover-mix: 70;
+    --link-hue: 266;
+    --link-chroma: 0.075;
+    --link-hover-chroma: 0.13;
 
     /* michael.gr: [Claude] --backdrop-color holds the color that pagination.scss of the theme states inline for the
        [Claude] backdrop of the jump-to-page dialog, so that the explicit colors are all defined here. */
@@ -260,18 +308,12 @@
         --background-chroma: 0.01;
         --foreground-lightness: 0.958;
 
-        --shadow-color-1: rgba(0, 0, 0, 0.2);
-        --shadow-color-2: rgba(0, 0, 0, 0.3);
+        --shadow-opacity: 0.2;
+        --shadow-edge-opacity: 0.2;
     }
 
-    /* michael.gr: [Claude] The link colors take their lightness from a mix of the text and background colors, because
-       [Claude] the lightness of the text in dark mode leaves no room for chroma, so links of that lightness would be
-       [Claude] practically white.
-       [Claude] Hovering moves the lightness further toward the background, where there is room for more chroma.
-       [Claude] Each chroma stays just within the sRGB gamut at its lightness in dark mode, so that browsers do not
-       [Claude] have to clip it. */
-    --link-color: oklch(from color-mix(in oklab, var(--primary-foreground-color) 85%, var(--primary-background-color)) l 0.075 266);
-    --link-color-hover: oklch(from color-mix(in oklab, var(--primary-foreground-color) 70%, var(--primary-background-color)) l 0.13 266);
+    --link-color: oklch(from color-mix(in oklab, var(--primary-background-color), var(--primary-foreground-color) calc(var(--link-mix) * 1%)) l var(--link-chroma) var(--link-hue));
+    --link-color-hover: oklch(from color-mix(in oklab, var(--primary-background-color), var(--primary-foreground-color) calc(var(--link-hover-mix) * 1%)) l var(--link-hover-chroma) var(--link-hue));
 }
 
 body

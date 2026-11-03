@@ -1,0 +1,468 @@
+{{- /* michael.gr: [Claude] Adds a "Tweaks" button to every page, which opens a window of sliders for trying out the
+    [Claude] numbers at the top of the "Colors" block in variables.scss without editing the file.
+    [Claude] baseof.html includes this partial only while the Hugo server runs, so it never reaches the published
+    [Claude] site.
+    [Claude] The panel lives in a window of its own, so that it does not affect the layout of the page.
+    [Claude] The window is opened empty and filled from the template below, so it has the origin of the page and
+    [Claude] shares its local storage; the page and the window communicate only through local storage, so every
+    [Claude] open page follows the sliders, and the values persist across pages.
+    [Claude] The slider values are kept per color scheme, and are applied as inline custom properties on the root
+    [Claude] element, which take precedence over the ones in variables.scss.
+    [Claude] The script runs right after the color scheme has been chosen and before the page content is parsed, so
+    [Claude] that the page never shows the values of the file first. */ -}}
+<style>
+    #tweaks-panel-button {
+        position: fixed; right: 12px; bottom: 12px; z-index: 10000; padding: 6px 12px; background: #1e1e1e;
+        color: #ddd; border: 1px solid #666; border-radius: 6px; font: 13px "Segoe UI", sans-serif; cursor: pointer;
+    }
+    #tweaks-panel-button:hover { background: #333; }
+</style>
+<script>
+(function() {
+    const overridesKey = 'michael.gr-tweaks-panel';
+    const fileValuesKey = 'michael.gr-tweaks-panel-file-values';
+    const schemeKey = 'michael.gr-tweaks-panel-scheme';
+    // [Claude] The names are those of the sliders of the panel, in the template below.
+    const names = [
+        '--background-lightness', '--background-chroma', '--background-hue',
+        '--foreground-lightness', '--foreground-chroma', '--foreground-hue',
+        '--link-hue', '--link-chroma', '--link-hover-chroma', '--link-mix', '--link-hover-mix',
+        '--card-lift',
+        '--body-text-mix', '--accent-mix', '--accent-hover-mix', '--blockquote-background-mix',
+        '--blockquote-border-mix', '--code-background-mix', '--pre-background-mix', '--table-border-mix',
+        '--table-even-row-mix', '--scrollbar-thumb-mix', '--scrollbar-track-mix',
+        '--shadow-opacity', '--shadow-blur', '--shadow-offset', '--shadow-hover-scale', '--shadow-edge-opacity'
+    ];
+    const root = document.documentElement;
+
+    // [Claude] Carry over the values saved under the keys of the earlier names of the tweaks panel, the theme panel
+    // [Claude] and the color panel, most recent first.
+    for( const oldKey of [ 'michael.gr-theme-panel', 'michael.gr-color-panel' ] )
+        if( localStorage.getItem( overridesKey ) === null && localStorage.getItem( oldKey ) !== null )
+            localStorage.setItem( overridesKey, localStorage.getItem( oldKey ) );
+
+    function currentScheme() {
+        return root.dataset.scheme === 'dark' ? 'dark' : 'light';
+    }
+
+    function applyOverrides() {
+        for( const name of names )
+            root.style.removeProperty( name );
+        let overrides;
+        try {
+            overrides = JSON.parse( localStorage.getItem( overridesKey ) ) || {};
+        } catch( e ) {
+            overrides = {};
+        }
+        const values = overrides[currentScheme()];
+        if( values )
+            for( const name of names )
+                if( name in values )
+                    root.style.setProperty( name, values[name] );
+    }
+
+    // [Claude] Read the values of variables.scss for a scheme by briefly switching to that scheme without the inline
+    // [Claude] overrides; nothing is painted in between, because the switch is undone within the same task.
+    function readFileValues( scheme ) {
+        observer.disconnect();
+        const savedScheme = root.dataset.scheme;
+        const savedStyle = root.getAttribute( 'style' );
+        for( const name of names )
+            root.style.removeProperty( name );
+        root.dataset.scheme = scheme;
+        const computed = getComputedStyle( root );
+        const values = {};
+        for( const name of names )
+            values[name] = parseFloat( computed.getPropertyValue( name ) );
+        root.dataset.scheme = savedScheme;
+        if( savedStyle === null )
+            root.removeAttribute( 'style' );
+        else
+            root.setAttribute( 'style', savedStyle );
+        observer.takeRecords();
+        observer.observe( root, { attributes: true, attributeFilter: [ 'data-scheme' ] } );
+        return values;
+    }
+
+    const observer = new MutationObserver( function() {
+        applyOverrides();
+        localStorage.setItem( schemeKey, currentScheme() );
+    } );
+    observer.observe( root, { attributes: true, attributeFilter: [ 'data-scheme' ] } );
+    localStorage.setItem( fileValuesKey,
+        JSON.stringify( { light: readFileValues( 'light' ), dark: readFileValues( 'dark' ) } ) );
+    localStorage.setItem( schemeKey, currentScheme() );
+    applyOverrides();
+
+    window.addEventListener( 'storage', function( event ) {
+        if( event.key === overridesKey )
+            applyOverrides();
+    } );
+
+    // [Claude] Fill the panel window only if it is empty, so that clicking the button while the window is open only
+    // [Claude] brings it to the front; the window is found by its name.
+    function openPanel() {
+        const panelWindow = window.open( '', 'michael-gr-tweaks-panel', 'popup,width=380,height=900' );
+        if( !panelWindow )
+            return;
+        if( !panelWindow.document.getElementById( 'tweaks-panel' ) ) {
+            panelWindow.document.open();
+            panelWindow.document.write( document.getElementById( 'tweaks-panel-template' ).innerHTML );
+            panelWindow.document.close();
+        }
+        panelWindow.focus();
+    }
+
+    document.addEventListener( 'DOMContentLoaded', function() {
+        const button = document.createElement( 'button' );
+        button.id = 'tweaks-panel-button';
+        button.textContent = 'Tweaks';
+        button.addEventListener( 'click', openPanel );
+        document.body.appendChild( button );
+    } );
+})();
+</script>
+<template id="tweaks-panel-template">
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Tweaks</title>
+<style>
+    body { margin: 0; background: #1e1e1e; color: #ddd; font: 13px/1.4 "Segoe UI", sans-serif; }
+    #tweaks-panel { padding: 14px; }
+    #tweaks-panel h2 { margin: 0 0 4px; font-size: 15px; color: #fff; }
+    #tweaks-panel .tweaks-panel-scheme { margin-bottom: 10px; color: #aaa; }
+    #tweaks-panel details { margin: 0 0 8px; padding: 6px 10px; border: 1px solid #444; border-radius: 6px; }
+    #tweaks-panel details[open] { padding-bottom: 10px; }
+    #tweaks-panel summary { color: #fff; cursor: pointer; }
+    #tweaks-panel .tweaks-panel-hex-readout { float: right; color: #aaa; font-family: "JetBrains Mono", monospace; }
+    #tweaks-panel input.tweaks-panel-hex { width: 80px; background: #2a2a2a; color: #ddd; border: 1px solid #555;
+        font-family: "JetBrains Mono", monospace; }
+    #tweaks-panel .tweaks-panel-swatch { display: inline-block; width: 14px; height: 14px; margin-right: 6px;
+        vertical-align: -2px; border: 1px solid #888; border-radius: 3px; }
+    #tweaks-panel label { display: block; margin-top: 6px; }
+    #tweaks-panel .tweaks-panel-row { display: flex; gap: 8px; align-items: center; }
+    #tweaks-panel input[type="range"] { flex: 1; min-width: 0; }
+    #tweaks-panel input[type="number"] { width: 64px; background: #2a2a2a; color: #ddd; border: 1px solid #555; }
+    #tweaks-panel .tweaks-panel-legend { height: 10px; margin-right: 72px; border: 1px solid #555; border-radius: 3px; }
+    #tweaks-panel .tweaks-panel-ends { display: flex; justify-content: space-between; margin-right: 72px;
+        font-size: 11px; color: #999; }
+    #tweaks-panel button { margin: 0 6px 8px 0; padding: 4px 10px; background: #333; color: #eee;
+        border: 1px solid #666; border-radius: 4px; cursor: pointer; }
+    #tweaks-panel button:hover { background: #444; }
+    #tweaks-panel textarea { box-sizing: border-box; width: 100%; height: 300px; background: #2a2a2a; color: #ddd;
+        border: 1px solid #555; font: 11px/1.4 "JetBrains Mono", monospace; white-space: pre; }
+</style>
+</head>
+<body>
+<div id="tweaks-panel">
+    <h2>Tweaks</h2>
+    <div class="tweaks-panel-scheme"></div>
+</div>
+<script>
+(function() {
+    const overridesKey = 'michael.gr-tweaks-panel';
+    const fileValuesKey = 'michael.gr-tweaks-panel-file-values';
+    const schemeKey = 'michael.gr-tweaks-panel-scheme';
+
+    function lightness( min, max ) {
+        return { title: 'Lightness', min, max, step: 0.001, decimals: 4, ends: [ 'dark', 'light' ] };
+    }
+    function chroma( title ) {
+        return { title, min: 0, max: 0.37, step: 0.001, decimals: 4, ends: [ 'gray', 'vivid' ] };
+    }
+    function hue() {
+        return { title: 'Hue', min: 0, max: 360, step: 1, decimals: 1, ends: [ '0', '360' ] };
+    }
+    function mix( title ) {
+        return { title, min: 0, max: 100, step: 0.5, decimals: 1, ends: [ 'background', 'text' ], mix: true };
+    }
+    function lift( title ) {
+        return { title, min: 0, max: 0.2, step: 0.001, decimals: 4, ends: [ '0', '0.2' ], lift: true };
+    }
+
+    const sections = [
+        { title: 'Background', color: 'background', sliders: {
+            '--background-lightness': lightness( 0, 1 ),
+            '--background-chroma': chroma( 'Chroma' ),
+            '--background-hue': hue() } },
+        { title: 'Text', color: 'foreground', sliders: {
+            '--foreground-lightness': lightness( 0, 1 ),
+            '--foreground-chroma': chroma( 'Chroma' ),
+            '--foreground-hue': hue() } },
+        { title: 'Links', sliders: {
+            '--link-hue': hue(),
+            '--link-chroma': chroma( 'Chroma' ),
+            '--link-hover-chroma': chroma( 'Chroma when hovered' ),
+            '--link-mix': mix( 'Lightness, as a share of the text' ),
+            '--link-hover-mix': mix( 'Lightness when hovered, as a share of the text' ) } },
+        { title: 'Cards', sliders: {
+            '--card-lift': lift( 'Lightness above the page background (and of a selected card above a card)' ) } },
+        { title: 'Mixes (share of the text color, in percent)', sliders: {
+            '--body-text-mix': mix( 'Body text' ),
+            '--accent-mix': mix( 'Accent (heading marks, tags, categories)' ),
+            '--accent-hover-mix': mix( 'Accent when hovered (added to the accent)' ),
+            '--blockquote-background-mix': mix( 'Blockquote background (over the card)' ),
+            '--blockquote-border-mix': mix( 'Blockquote border (over the card)' ),
+            '--code-background-mix': mix( 'Inline code background (over the card)' ),
+            '--pre-background-mix': mix( 'Code block background (over the card)' ),
+            '--table-border-mix': mix( 'Table borders' ),
+            '--table-even-row-mix': mix( 'Even table rows (over the card)' ),
+            '--scrollbar-thumb-mix': mix( 'Scrollbar thumb' ),
+            '--scrollbar-track-mix': mix( 'Scrollbar track' ) } },
+        { title: 'Shadows', sliders: {
+            '--shadow-opacity': { title: 'Soft opacity', min: 0, max: 1, step: 0.005, decimals: 3,
+                ends: [ 'none', 'black' ] },
+            '--shadow-blur': { title: 'Blur (how far the fade extends, in px)', min: 0, max: 64, step: 0.5,
+                decimals: 1, ends: [ '0', '64' ], noLegend: true },
+            '--shadow-offset': { title: 'Offset (downward, in px)', min: 0, max: 32, step: 0.5, decimals: 1,
+                ends: [ '0', '32' ], noLegend: true },
+            '--shadow-hover-scale': { title: 'Growth on hover (times the blur and offset)', min: 1, max: 4,
+                step: 0.05, decimals: 2, ends: [ '1×', '4×' ], noLegend: true },
+            '--shadow-edge-opacity': { title: 'Edge opacity (thin outline)', min: 0, max: 1, step: 0.005,
+                decimals: 3, ends: [ 'none', 'black' ] } } }
+    ];
+    const sliders = {};
+    for( const section of sections )
+        Object.assign( sliders, section.sliders );
+    const names = Object.keys( sliders );
+    const panel = document.getElementById( 'tweaks-panel' );
+    const inputs = {};
+
+    function load( key ) {
+        try {
+            return JSON.parse( localStorage.getItem( key ) ) || {};
+        } catch( e ) {
+            return {};
+        }
+    }
+
+    function currentScheme() {
+        return localStorage.getItem( schemeKey ) === 'dark' ? 'dark' : 'light';
+    }
+
+    // [Claude] Lay the overrides over the values of variables.scss, because overrides saved before a slider was added
+    // [Claude] lack its value.
+    function valuesOf( scheme ) {
+        return Object.assign( {}, load( fileValuesKey )[scheme], load( overridesKey )[scheme] );
+    }
+
+    function format( value, decimals ) {
+        return Number( value ).toFixed( decimals ).replace( /(\.\d*?)0+$/, '$1' ).replace( /\.$/, '' );
+    }
+
+    function oklch( l, c, h ) {
+        return 'oklch(' + l + ' ' + c + ' ' + h + ')';
+    }
+
+    function gradient( colorAt ) {
+        const stops = [];
+        for( let i = 0; i <= 12; i++ )
+            stops.push( colorAt( i / 12 ) );
+        return 'linear-gradient(to right, ' + stops.join( ', ' ) + ')';
+    }
+
+    function refresh() {
+        const scheme = currentScheme();
+        const v = valuesOf( scheme );
+        panel.querySelector( '.tweaks-panel-scheme' ).textContent = 'Editing ' + scheme + ' mode' +
+            (load( overridesKey )[scheme] ? ' (changed)' : ' (as in variables.scss)');
+        for( const name of names ) {
+            inputs[name].range.value = v[name];
+            inputs[name].number.value = format( v[name], sliders[name].decimals );
+        }
+        const bl = v['--background-lightness'], bc = v['--background-chroma'], bh = v['--background-hue'];
+        const fl = v['--foreground-lightness'], fc = v['--foreground-chroma'], fh = v['--foreground-hue'];
+        const background = oklch( bl, bc, bh );
+        const text = oklch( fl, fc, fh );
+        for( const section of sections ) {
+            if( !section.color )
+                continue;
+            const p = '--' + section.color + '-';
+            const l = v[p + 'lightness'], c = v[p + 'chroma'], h = v[p + 'hue'];
+            panel.querySelector( '.tweaks-panel-swatch-' + section.color ).style.background = oklch( l, c, h );
+            const hex = renderedHex( oklch( l, c, h ) );
+            panel.querySelector( '.tweaks-panel-hex-readout-' + section.color ).textContent = hex;
+            const hexInput = panel.querySelector( '.tweaks-panel-hex-' + section.color );
+            if( document.activeElement !== hexInput )
+                hexInput.value = hex;
+            inputs[p + 'lightness'].legend.style.background = gradient( t => oklch( t, c, h ) );
+            inputs[p + 'chroma'].legend.style.background = gradient( t => oklch( l, t * 0.37, h ) );
+            // [Claude] Draw the hue legend with a chroma of at least 0.1, because at the chroma of the color, which
+            // [Claude] is often zero, every hue would look the same gray.
+            inputs[p + 'hue'].legend.style.background = gradient( t => oklch( l, Math.max( c, 0.1 ), t * 360 ) );
+        }
+        for( const name of names ) {
+            if( sliders[name].mix )
+                inputs[name].legend.style.background = 'linear-gradient(to right in oklab, ' + background + ', ' +
+                    text + ')';
+            else if( sliders[name].lift )
+                inputs[name].legend.style.background = gradient( t => oklch( bl + t * 0.2, bc, bh ) );
+        }
+        // [Claude] Draw the link legends at the lightness of the link, which is a mix of the background and text
+        // [Claude] lightness, because a mix in oklab mixes the lightness linearly.
+        const linkLightness = bl + (fl - bl) * v['--link-mix'] / 100;
+        const hoverLightness = bl + (fl - bl) * v['--link-hover-mix'] / 100;
+        const linkHue = v['--link-hue'];
+        inputs['--link-hue'].legend.style.background =
+            gradient( t => oklch( linkLightness, Math.max( v['--link-chroma'], 0.1 ), t * 360 ) );
+        inputs['--link-chroma'].legend.style.background =
+            gradient( t => oklch( linkLightness, t * 0.37, linkHue ) );
+        inputs['--link-hover-chroma'].legend.style.background =
+            gradient( t => oklch( hoverLightness, t * 0.37, linkHue ) );
+        for( const name of [ '--shadow-opacity', '--shadow-edge-opacity' ] )
+            inputs[name].legend.style.background = 'linear-gradient(to right, ' + background + ', black)';
+    }
+
+    // [Claude] Draw the color on a canvas and read back the pixel, so that the hex is the result of the rounding done
+    // [Claude] by the browser itself rather than of a calculation that might round differently.
+    const canvasContext = document.createElement( 'canvas' ).getContext( '2d', { willReadFrequently: true } );
+
+    function renderedHex( color ) {
+        canvasContext.clearRect( 0, 0, 1, 1 );
+        canvasContext.fillStyle = color;
+        canvasContext.fillRect( 0, 0, 1, 1 );
+        const pixel = canvasContext.getImageData( 0, 0, 1, 1 ).data;
+        return '#' + [ pixel[0], pixel[1], pixel[2] ].map( x => x.toString( 16 ).padStart( 2, '0' ) ).join( '' );
+    }
+
+    // [Claude] Return the lightness, chroma and hue of an sRGB hex color, or null if the text is not one.
+    function oklchOfHex( text, previousHue ) {
+        let digits = text.trim().replace( /^#/, '' );
+        if( /^[0-9a-fA-F]{3}$/.test( digits ) )
+            digits = digits.split( '' ).map( d => d + d ).join( '' );
+        if( !/^[0-9a-fA-F]{6}$/.test( digits ) )
+            return null;
+        const [ r, g, b ] = [ 0, 2, 4 ].map( i => {
+            const x = parseInt( digits.substr( i, 2 ), 16 ) / 255;
+            return x <= 0.04045 ? x / 12.92 : Math.pow( (x + 0.055) / 1.055, 2.4 );
+        } );
+        const l = Math.cbrt( 0.4122214708 * r + 0.5363325363 * g + 0.0514459929 * b );
+        const m = Math.cbrt( 0.2119034982 * r + 0.6806995451 * g + 0.1073969566 * b );
+        const s = Math.cbrt( 0.0883024619 * r + 0.2817188376 * g + 0.6299787005 * b );
+        const L = 0.2104542553 * l + 0.7936177850 * m - 0.0040720468 * s;
+        const A = 1.9779984951 * l - 2.4285922050 * m + 0.4505937099 * s;
+        const B = 0.0259040371 * l + 0.7827717662 * m - 0.8086757660 * s;
+        const C = Math.sqrt( A * A + B * B );
+        // [Claude] Keep the previous hue for a gray, because the hue of a gray is meaningless, and keeping it lets
+        // [Claude] the chroma slider bring back the same color.
+        const H = C < 0.00005 ? previousHue : (Math.atan2( B, A ) * 180 / Math.PI + 360) % 360;
+        return { lightness: Number( L.toFixed( 4 ) ), chroma: Number( C.toFixed( 4 ) ), hue: Number( H.toFixed( 1 ) ) };
+    }
+
+    function setValues( changes ) {
+        const scheme = currentScheme();
+        const overrides = load( overridesKey );
+        overrides[scheme] = Object.assign( valuesOf( scheme ), changes );
+        localStorage.setItem( overridesKey, JSON.stringify( overrides ) );
+        refresh();
+    }
+
+    // [Claude] Leave out of the dark mode lines the values that equal those of light mode, because the dark mode block
+    // [Claude] in variables.scss inherits every value it does not state.
+    function copyText() {
+        const light = valuesOf( 'light' );
+        const dark = valuesOf( 'dark' );
+        function line( values, name, indent ) {
+            return indent + name + ': ' + format( values[name], sliders[name].decimals ) + ';';
+        }
+        const darkLines = names.filter( name => format( dark[name], sliders[name].decimals ) !==
+            format( light[name], sliders[name].decimals ) ).map( name => line( dark, name, '        ' ) );
+        return '    /* light mode (:root) */\n' + names.map( name => line( light, name, '    ' ) ).join( '\n' ) +
+            '\n        /* dark mode (&[data-scheme="dark"]): the values that differ from light mode */\n' +
+            darkLines.join( '\n' ) + '\n';
+    }
+
+    function addSlider( section, name ) {
+        const slider = sliders[name];
+        const label = document.createElement( 'label' );
+        label.innerHTML = slider.title +
+            '<div class="tweaks-panel-row"><input type="range"><input type="number"></div>' +
+            '<div class="tweaks-panel-legend"></div><div class="tweaks-panel-ends"><span>' +
+            slider.ends[0] + '</span><span>' + slider.ends[1] + '</span></div>';
+        const range = label.querySelector( 'input[type="range"]' );
+        const number = label.querySelector( 'input[type="number"]' );
+        const legend = label.querySelector( '.tweaks-panel-legend' );
+        if( slider.noLegend )
+            legend.style.display = 'none';
+        for( const input of [ range, number ] ) {
+            input.min = slider.min;
+            input.max = slider.max;
+            input.step = slider.step;
+        }
+        range.addEventListener( 'input', () => setValues( { [name]: parseFloat( range.value ) } ) );
+        number.addEventListener( 'change', () => setValues( { [name]: parseFloat( number.value ) } ) );
+        inputs[name] = { range, number, legend };
+        section.appendChild( label );
+    }
+
+    // [Claude] Give every section the same `name`, so that the browser keeps at most one of them open.
+    function addSection( summaryHtml, open ) {
+        const details = document.createElement( 'details' );
+        details.name = 'tweaks-panel-section';
+        details.open = open;
+        details.innerHTML = '<summary>' + summaryHtml + '</summary>';
+        panel.appendChild( details );
+        return details;
+    }
+
+    function addHexField( details, color ) {
+        const p = '--' + color + '-';
+        const hexLabel = document.createElement( 'label' );
+        hexLabel.innerHTML = 'Hex <input class="tweaks-panel-hex tweaks-panel-hex-' + color + '">';
+        const hexInput = hexLabel.querySelector( 'input' );
+        hexInput.addEventListener( 'change', () => {
+            const values = oklchOfHex( hexInput.value, valuesOf( currentScheme() )[p + 'hue'] );
+            if( values === null ) {
+                refresh();
+                return;
+            }
+            setValues( { [p + 'lightness']: values.lightness, [p + 'chroma']: values.chroma,
+                [p + 'hue']: values.hue } );
+        } );
+        details.appendChild( hexLabel );
+    }
+
+    for( const section of sections ) {
+        let summaryHtml = section.title;
+        if( section.color )
+            summaryHtml = '<span class="tweaks-panel-swatch tweaks-panel-swatch-' + section.color + '"></span>' +
+                summaryHtml + '<span class="tweaks-panel-hex-readout tweaks-panel-hex-readout-' + section.color +
+                '"></span>';
+        const details = addSection( summaryHtml, section === sections[0] );
+        if( section.color )
+            addHexField( details, section.color );
+        for( const name of Object.keys( section.sliders ) )
+            addSlider( details, name );
+    }
+    const textarea = document.createElement( 'textarea' );
+    textarea.readOnly = true;
+    const copyButton = document.createElement( 'button' );
+    copyButton.textContent = 'Copy';
+    copyButton.addEventListener( 'click', () => {
+        textarea.value = copyText();
+        navigator.clipboard.writeText( textarea.value ).then(
+            () => copyButton.textContent = 'Copied',
+            () => copyButton.textContent = 'Copy failed; select the text below' );
+        setTimeout( () => copyButton.textContent = 'Copy', 2000 );
+    } );
+    const resetButton = document.createElement( 'button' );
+    resetButton.textContent = 'Reset this mode';
+    resetButton.addEventListener( 'click', () => {
+        const overrides = load( overridesKey );
+        delete overrides[currentScheme()];
+        localStorage.setItem( overridesKey, JSON.stringify( overrides ) );
+        refresh();
+    } );
+    panel.append( copyButton, resetButton, textarea );
+
+    // [Claude] Refresh on every change made by a page, because a page records its color scheme and the values of
+    // [Claude] variables.scss in local storage whenever it loads or switches scheme.
+    window.addEventListener( 'storage', refresh );
+    refresh();
+})();
+</script>
+</body>
+</html>
+</template>
