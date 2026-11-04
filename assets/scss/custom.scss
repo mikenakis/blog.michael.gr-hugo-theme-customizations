@@ -116,11 +116,11 @@ code.language-CSharp {
 }
 
 /* michael.gr: Give the panel look to the `<p>` instead of the `<input>`, so that the panel can contain the options.
-   The top padding is 0.4rem more than in the theme, to separate the "Search" label from the text. */
+   michael.gr: [Claude] The top padding is 1rem more than in the theme, to separate the "Search" label from the text. */
 .search-form.widget p {
     display: grid;
     grid-template-columns: 1fr var(--button-size);
-    padding: calc(var(--spacing-2xl) + 0.4rem) 0 var(--spacing-md) var(--spacing-lg);
+    padding: calc(var(--spacing-2xl) + 1rem) 0 var(--spacing-md) var(--spacing-lg);
     @include card-style;
     transition: box-shadow 0.3s ease;
 
@@ -156,16 +156,16 @@ code.language-CSharp {
 .search-form.widget button {
     position: static;
     height: auto;
-    margin-block: calc(-1 * (var(--spacing-2xl) + 0.4rem));
+    margin-block: calc(-1 * (var(--spacing-2xl) + 1rem));
 }
 
 /* michael.gr: Place the search options below the text. */
 .search-form.widget .search-options {
     grid-column: 1 / -1;
-    margin-top: 1.4rem;
+    margin-top: 2rem;
     display: flex;
     flex-direction: column;
-    gap: 1.2rem;
+    gap: 1.6rem;
     font-size: 1.3rem;
     color: var(--card-text-color-tertiary);
 }
