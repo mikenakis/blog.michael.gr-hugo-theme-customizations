@@ -116,12 +116,19 @@ code.language-CSharp {
 }
 
 /* michael.gr: Give the panel look to the `<p>` instead of the `<input>`, so that the panel can contain the options.
-   michael.gr: [Claude] The top padding is 1rem more than in the theme, to separate the "Search" label from the text. */
+   michael.gr: [Claude] The top padding is 1rem more than in the theme, to separate the "Search" label from the text.
+   [Claude] The left padding, and with it the position of the "Search" label, is 9px less than in the theme, because
+   [Claude] the sidebar is a fixed share of the window, so the "Match: all / any word" line would otherwise reach the
+   [Claude] right edge of the panel. */
 .search-form.widget p {
     display: grid;
-    grid-template-columns: 1fr var(--button-size);
-    padding: calc(var(--spacing-2xl) + 1rem) 0 var(--spacing-md) var(--spacing-lg);
+    grid-template-columns: 1fr 4rem;
+    padding: calc(var(--spacing-2xl) + 1rem) 0 var(--spacing-md) calc(var(--spacing-md) - 0.4rem);
     @include card-style;
+
+    > label {
+        inset-inline-start: calc(var(--spacing-md) - 0.4rem);
+    }
     transition: box-shadow 0.3s ease;
 
     &:has(input[name="keyword"]:focus) {
@@ -134,14 +141,14 @@ code.language-CSharp {
    michael.gr: [Claude] Give the text field the page background, so that it stands out as an inset field in the panel.
    The negative margins cancel out its padding, so that the text stays aligned with the "Search" label and the panel
    keeps its height.
-   The width makes up for the left margin and reaches 1rem into the column of the search button, whose icon is centred
-   with 2rem on each side, so that the field ends 1rem before the icon. */
+   [Claude] The width makes up for the left margin, so that the field ends where the column of the search button
+   [Claude] begins, 1rem before the icon. */
 .search-form.widget input[name="keyword"] {
     display: block;
     contain: inline-size;
-    width: calc(100% + 1.8rem);
-    padding: 0.4rem 0.8rem;
-    margin: -0.4rem 0 -0.4rem -0.8rem;
+    width: calc(100% + 0.4rem);
+    padding: 0.4rem;
+    margin: -0.4rem 0 -0.4rem -0.4rem;
     background: var(--primary-background-color);
     border-radius: var(--tag-border-radius);
     box-shadow: none;
@@ -150,12 +157,23 @@ code.language-CSharp {
     &:focus {
         box-shadow: none;
     }
+
+    /* michael.gr: [Claude] Draw the placeholder in a color mixed from the background and text colors, because the
+       [Claude] browser draws it in a gray of its own, which is too bright in dark mode and too dark in light mode. */
+    &::placeholder {
+        color: var(--placeholder-color);
+        opacity: 1;
+    }
 }
 
-/* michael.gr: Centre the icon of the search button on the text line; the negative margins keep the row from growing. */
+/* michael.gr: Centre the icon of the search button on the text line; the negative margins keep the row from growing.
+   michael.gr: [Claude] The button fills its 4rem column without padding, so that its 2rem icon is centred with 1rem on
+   [Claude] each side. */
 .search-form.widget button {
     position: static;
+    width: auto;
     height: auto;
+    padding: 0;
     margin-block: calc(-1 * (var(--spacing-2xl) + 1rem));
 }
 

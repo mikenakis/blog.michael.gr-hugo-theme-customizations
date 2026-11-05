@@ -16,6 +16,7 @@
     --accent-color-darker: color-mix(in oklab, var(--accent-color), var(--primary-foreground-color) calc(var(--accent-hover-mix) * 1%)); //used when hovering over a category/tag
     --accent-color-text: var(--body-text-color); //only used for categories/tags
     --body-text-color: color-mix(in oklab, var(--primary-background-color), var(--primary-foreground-color) calc(var(--body-text-mix) * 1%));
+    --placeholder-color: color-mix(in oklab, var(--primary-background-color), var(--primary-foreground-color) calc(var(--placeholder-mix) * 1%));
 
     --tag-border-radius: 4px;
 
@@ -242,32 +243,32 @@
     /* michael.gr: [Claude] The background and text colors are each defined by a lightness, a chroma and a hue, so
        [Claude] that trying another color scheme means changing only these numbers, and every other color follows,
        [Claude] because it is mixed from these two.
-       [Claude] A hue shows only where its chroma is above zero, which is now only the background in dark mode.
+       [Claude] A hue shows only where its chroma is above zero.
        [Claude] While the Hugo server runs, the tweaks panel (`_partials/tweaks-panel.html`) overrides these numbers,
        [Claude] and the other numbers at the top of this block, in the browser. */
-    --background-hue: 285;
-    --background-lightness: 0.898;
-    --background-chroma: 0;
-    --foreground-hue: 285;
-    --foreground-lightness: 0.372;
-    --foreground-chroma: 0;
+    --background-hue: 43;
+    --background-lightness: 0.825;
+    --background-chroma: 0.004;
+    --foreground-hue: 43;
+    --foreground-lightness: 0.124;
+    --foreground-chroma: 0.027;
     --primary-background-color: oklch(var(--background-lightness) var(--background-chroma) var(--background-hue));
     --primary-foreground-color: oklch(var(--foreground-lightness) var(--foreground-chroma) var(--foreground-hue));
 
     /* michael.gr: [Claude] The soft layers of the shadows are black at --shadow-opacity, and the thin outline layers
        [Claude] are black at --shadow-edge-opacity, the 2px one half again as opaque, as in the theme. */
-    --shadow-opacity: 0.04;
-    --shadow-edge-opacity: 0.04;
-    --shadow-blur: 8;
-    --shadow-offset: 4;
-    --shadow-hover-scale: 2.5;
+    --shadow-opacity: 0.4;
+    --shadow-edge-opacity: 0;
+    --shadow-blur: 15;
+    --shadow-offset: 15;
+    --shadow-hover-scale: 1.3;
     --shadow-color-1: rgb(0 0 0 / var(--shadow-opacity));
     --shadow-color-2: rgb(0 0 0 / calc(var(--shadow-edge-opacity) * 1.5));
     --shadow-edge-color: rgb(0 0 0 / var(--shadow-edge-opacity));
 
     /* michael.gr: [Claude] Cards are lighter than the page background by --card-lift, in oklab lightness, and selected
        [Claude] cards are lighter than cards by the same amount. */
-    --card-lift: 0.045;
+    --card-lift: 0.066;
 
     /* michael.gr: [Claude] Each of the colors derived from the background and text colors states the share of the
        [Claude] text color in it, as a percentage, in one of these numbers, so that the contrast of each one can be
@@ -285,18 +286,17 @@
     --table-even-row-mix: 4;
     --scrollbar-thumb-mix: 32;
     --scrollbar-track-mix: 15;
+    --placeholder-mix: 18;
 
     /* michael.gr: [Claude] The link colors take their lightness from a mix of the text and background colors, because
        [Claude] the lightness of the text in dark mode leaves no room for chroma, so links of that lightness would be
        [Claude] practically white.
-       [Claude] Hovering moves the lightness further toward the background, where there is room for more chroma.
-       [Claude] Each chroma stays just within the sRGB gamut at its lightness in dark mode, so that browsers do not
-       [Claude] have to clip it. */
-    --link-mix: 85;
-    --link-hover-mix: 70;
+       [Claude] Hovering moves the lightness further toward the background, where there is room for more chroma. */
+    --link-mix: 60;
+    --link-hover-mix: 29;
     --link-hue: 266;
-    --link-chroma: 0.075;
-    --link-hover-chroma: 0.13;
+    --link-chroma: 0.142;
+    --link-hover-chroma: 0.322;
 
     /* michael.gr: [Claude] --backdrop-color holds the color that pagination.scss of the theme states inline for the
        [Claude] backdrop of the jump-to-page dialog, so that the explicit colors are all defined here. */
@@ -304,12 +304,23 @@
 
     &[data-scheme="dark"]
     {
-        --background-lightness: 0.193;
-        --background-chroma: 0.01;
+        --background-lightness: 0.12;
+        --background-chroma: 0.017;
+        --background-hue: 44;
         --foreground-lightness: 0.958;
+        --foreground-chroma: 0.025;
+        --foreground-hue: 81;
 
-        --shadow-opacity: 0.2;
-        --shadow-edge-opacity: 0.2;
+        --link-chroma: 0.075;
+        --link-hover-chroma: 0.256;
+        --link-mix: 69;
+        --link-hover-mix: 70;
+        --card-lift: 0.05;
+        --placeholder-mix: 15;
+
+        --shadow-opacity: 0.5;
+        --shadow-hover-scale: 1.8;
+        --shadow-edge-opacity: 0.5;
     }
 
     --link-color: oklch(from color-mix(in oklab, var(--primary-background-color), var(--primary-foreground-color) calc(var(--link-mix) * 1%)) l var(--link-chroma) var(--link-hue));

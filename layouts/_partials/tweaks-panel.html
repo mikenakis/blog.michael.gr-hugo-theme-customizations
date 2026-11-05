@@ -30,7 +30,7 @@
         '--card-lift',
         '--body-text-mix', '--accent-mix', '--accent-hover-mix', '--blockquote-background-mix',
         '--blockquote-border-mix', '--code-background-mix', '--pre-background-mix', '--table-border-mix',
-        '--table-even-row-mix', '--scrollbar-thumb-mix', '--scrollbar-track-mix',
+        '--table-even-row-mix', '--scrollbar-thumb-mix', '--scrollbar-track-mix', '--placeholder-mix',
         '--shadow-opacity', '--shadow-blur', '--shadow-offset', '--shadow-hover-scale', '--shadow-edge-opacity'
     ];
     const root = document.documentElement;
@@ -210,7 +210,8 @@
             '--table-border-mix': mix( 'Table borders' ),
             '--table-even-row-mix': mix( 'Even table rows (over the card)' ),
             '--scrollbar-thumb-mix': mix( 'Scrollbar thumb' ),
-            '--scrollbar-track-mix': mix( 'Scrollbar track' ) } },
+            '--scrollbar-track-mix': mix( 'Scrollbar track' ),
+            '--placeholder-mix': mix( 'Search box placeholder' ) } },
         { title: 'Shadows', sliders: {
             '--shadow-opacity': { title: 'Soft opacity', min: 0, max: 1, step: 0.005, decimals: 3,
                 ends: [ 'none', 'black' ] },
