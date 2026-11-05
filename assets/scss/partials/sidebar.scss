@@ -35,7 +35,9 @@
     position: relative;
 
     --sidebar-avatar-size: 100px;
-    --sidebar-element-separation: var(--spacing-lg);
+    /* michael.gr: [Claude] The elements of the sidebar are separated by 4px more than in the theme, in every layout.
+       [Claude] Was: var(--spacing-lg), and, from `respond(2xl)`, var(--spacing-xl). */
+    --sidebar-element-separation: calc(var(--spacing-lg) + 4px);
     --emoji-size: 40px;
     --emoji-font-size: 20px;
 
@@ -48,7 +50,7 @@
 
     @include respond(2xl) {
         --sidebar-avatar-size: 120px;
-        --sidebar-element-separation: var(--spacing-xl);
+        --sidebar-element-separation: calc(var(--spacing-xl) + 4px);
         --emoji-size: 40px;
     }
 
@@ -112,9 +114,15 @@
         padding: 0;
     }
 
+    /* michael.gr: [Claude] Pull the avatar 4px up, so that it stays as far from the logo as in the theme, instead of
+       [Claude] the 4px larger separation of the elements of the sidebar.
+       [Claude] Separate the social icons below the avatar by 4px more than the other elements of the sidebar, because
+       [Claude] the filled photo and its shadow appear closer to the icons than the thin strokes of the icons do to the
+       [Claude] menu below them.
+       [Claude] Was: margin: 0; */
     .site-avatar {
         position: relative;
-        margin: 0;
+        margin: -4px 0 4px;
         width: var(--sidebar-avatar-size);
         height: var(--sidebar-avatar-size);
         flex-shrink: 0;

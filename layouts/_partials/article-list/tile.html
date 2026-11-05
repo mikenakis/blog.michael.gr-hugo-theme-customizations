@@ -4,10 +4,14 @@
     <a href="{{ .RelPermalink }}">
         {{ if $image }}
         <div class="article-image">
+            {{- /* michael.gr: [Claude] The thumbnail is 1.62:1, like the tiles, and about twice as wide as the
+                   [Claude] related-content tiles at a 1400px window (about 356px wide), so that it stays sharp
+                   [Claude] on high-density screens.
+                   [Claude] Was: "Width" 250 "Height" 150 */ -}}
             {{ partial "helper/thumbnail-image" (dict 
                 "Resource" $image.Resource
-                "Width" 250
-                "Height" 150
+                "Width" 720
+                "Height" 444
                 "Resize" .Site.Params.ImageProcessing.Thumbnail.Enabled
                 "Attributes" (dict
                     "src" $image.Permalink
@@ -20,16 +24,10 @@
         </div>
         {{ end }}
 
-        <div class="article-details"
-            {{- if and $image (reflect.IsImageResourceProcessable $image.Resource) -}}
-                {{- $colors := $image.Resource.Colors -}}
-                {{- if $colors -}}
-                    {{- $vibrant := index $colors 0 -}}
-                    {{- $darkMuted := index $colors 1 | default $vibrant -}}
-                    style="background: linear-gradient(0deg, {{ $darkMuted }}80 0%, {{ $vibrant }}C0 100%);"
-                {{- end -}}
-            {{- end -}}
-        >
+        {{- /* michael.gr: [Claude] Leave out the gradient that the theme lays over the image in colors taken from
+               [Claude] the image, because Hugo can take colors only from raster images, so SVG images went without
+               [Claude] it; article.scss gives every image the same tint instead. */ -}}
+        <div class="article-details">
             <h2 class="article-title">
                 {{- .Title -}}
             </h2>

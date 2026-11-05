@@ -226,12 +226,19 @@
 
     /* Article list tile variables */
     --article-tile-width: 250px;
-    --article-tile-height: 150px;
-    --article-tile-overlay-bg: rgba(0, 0, 0, 0.25);
+    /* michael.gr: [Claude] Tiles have an aspect ratio of 1.62:1, as do the images that tile.html resizes for them.
+       [Claude] Was: 150px */
+    --article-tile-height: 154px;
+    /* michael.gr: [Claude] The tint over the images of tiles is a gradient that is stronger at the bottom, where the
+       [Claude] title is.
+       [Claude] Was: rgba(0, 0, 0, 0.25), and, in dark mode, rgba(0, 0, 0, 0.45). */
+    --article-tile-overlay-bg: linear-gradient(to top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.8) 25%,
+        rgba(0, 0, 0, 0.45) 55%, rgba(0, 0, 0, 0));
     --article-tile-text-color: #fff;
 
     &[data-scheme="dark"] {
-        --article-tile-overlay-bg: rgba(0, 0, 0, 0.45);
+        --article-tile-overlay-bg: linear-gradient(to top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.88) 25%,
+            rgba(0, 0, 0, 0.55) 55%, rgba(0, 0, 0, 0.1));
     }
 }
 

@@ -115,20 +115,24 @@ code.language-CSharp {
     text-decoration: underline;
 }
 
+/* michael.gr: [Claude] Make the search panel as wide as the logo, whose width is fixed at 210px in left.html, instead
+   [Claude] of as wide as the sidebar, which is a share of the window.
+   [Claude] Separate the search panel from the menu entry above it by 4px more than the gap between menu entries,
+   [Claude] because the filled panel appears closer to the entry above it than the thin strokes of the icons do. */
+.search-form.widget {
+    @include respond(md) {
+        width: 210px;
+        margin-top: 4px;
+    }
+}
+
 /* michael.gr: Give the panel look to the `<p>` instead of the `<input>`, so that the panel can contain the options.
-   michael.gr: [Claude] The top padding is 1rem more than in the theme, to separate the "Search" label from the text.
-   [Claude] The left padding, and with it the position of the "Search" label, is 9px less than in the theme, because
-   [Claude] the sidebar is a fixed share of the window, so the "Match: all / any word" line would otherwise reach the
-   [Claude] right edge of the panel. */
+   michael.gr: [Claude] The top padding is 1rem more than in the theme, to separate the "Search" label from the text. */
 .search-form.widget p {
     display: grid;
     grid-template-columns: 1fr 4rem;
-    padding: calc(var(--spacing-2xl) + 1rem) 0 var(--spacing-md) calc(var(--spacing-md) - 0.4rem);
+    padding: calc(var(--spacing-2xl) + 1rem) 0 var(--spacing-md) var(--spacing-lg);
     @include card-style;
-
-    > label {
-        inset-inline-start: calc(var(--spacing-md) - 0.4rem);
-    }
     transition: box-shadow 0.3s ease;
 
     &:has(input[name="keyword"]:focus) {
@@ -253,6 +257,35 @@ code.language-CSharp {
         stroke-width: 1.33;
         width: 20px;
         height: 20px;
+    }
+}
+
+/* michael.gr: [Claude] Lay out the related content (see related-content.html) as a grid of at most 3 cards across,
+   [Claude] instead of a strip that scrolls horizontally.
+   [Claude] The cards stretch to fill the columns, keeping the aspect ratio of 1.62:1 of the tiles.
+   [Claude] The strip does not scroll, so it clips no shadows, which makes the edge fades, the shadow room and the
+   [Claude] negative margins that make up for the shadow room unnecessary. */
+.related-content .subsection-list {
+    overflow: visible;
+    margin: 0;
+    -webkit-mask-image: none;
+    mask-image: none;
+    animation: none;
+
+    .article-list--tile {
+        display: grid;
+        /* PEARL: [Claude] LibSass takes `max()` for its own function, which fails on `calc()`, so the CSS `max()` is
+           [Claude] passed through with `unquote()`. */
+        grid-template-columns: repeat(auto-fill,
+            minmax(unquote("max(200px, calc((100% - 2 * var(--spacing-lg)) / 3))"), 1fr));
+        width: auto;
+        padding: 0;
+
+        article {
+            width: auto;
+            height: auto;
+            aspect-ratio: 1.62;
+        }
     }
 }
 

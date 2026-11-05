@@ -187,12 +187,22 @@
 		}
 
 		&.has-image {
+			/* michael.gr: [Claude] Every image gets the same tint, raster or SVG, because tile.html leaves out the
+			   [Claude] gradient of the theme in colors taken from the image.
+			   [Claude] The tint is a background image, because --article-tile-overlay-bg is a gradient.
+			   [Claude] Was: background-color: var(--article-tile-overlay-bg); */
 			.article-details {
-				background-color: var(--article-tile-overlay-bg);
+				background-image: var(--article-tile-overlay-bg);
 			}
 
+			/* michael.gr: [Claude] Keep the title readable over any image, including images with text of their own,
+			   [Claude] with a dark halo around the letters.
+			   [Claude] The small shadows are repeated, because overlapping shadows add up, which makes the halo nearly
+			   [Claude] opaque close to the letters. */
 			.article-title {
 				color: var(--article-tile-text-color);
+				text-shadow: 0 0 2px #000, 0 0 2px #000, 0 0 3px #000, 0 0 4px #000, 0 0 6px #000, 0 0 10px #000,
+					0 0 16px rgba(0, 0, 0, 0.9), 0 0 24px rgba(0, 0, 0, 0.8), 0 0 36px rgba(0, 0, 0, 0.6);
 			}
 		}
 
@@ -226,10 +236,13 @@
 			}
 		}
 
+		/* michael.gr: [Claude] Move the title 8px down from where the padding of `.article-details` places it. */
 		.article-title {
 			font-size: 2rem;
 			font-weight: 500;
 			color: var(--card-text-color-main);
+			position: relative;
+			top: 8px;
 
 			@include respond(sm) {
 				font-size: 2.2rem;

@@ -166,11 +166,14 @@
            panel at both sides.
            Make room for the hover shadow with horizontal padding, cancelled by a negative margin of the same width,
            as `.subsection-list` does in list.scss; limit it to the container padding to prevent page overflow.
+           [Claude] The search panel is as wide as the logo (210px, see custom.scss), so in a sidebar narrower than that it
+           [Claude] sticks out to the right by `210px - 100%`, which the right padding adds to the room for the shadow.
            Was: padding: 0; margin: 0; */
         --shadow-overlap-x: min(calc(var(--shadow-l2-blur) + 4px), var(--container-padding));
-        padding: 0 var(--shadow-overlap-x);
+        --shadow-overlap-right: calc(var(--shadow-overlap-x) + max(0px, 210px - 100%));
+        padding: 0 var(--shadow-overlap-right) 0 var(--shadow-overlap-x);
         box-shadow: none;
-        margin: 0 calc(var(--shadow-overlap-x) * -1);
+        margin: 0 calc(var(--shadow-overlap-right) * -1) 0 calc(var(--shadow-overlap-x) * -1);
     }
 
     li {
@@ -189,9 +192,13 @@
             height: 20px;
         }
 
+        /* michael.gr: [Claude] Make the link a block-level flex box, so that the entry is exactly as tall as its icon,
+           [Claude] because an inline box sits on a line box of the font, whose extra height would change the visible
+           [Claude] gaps between the entries with the font.
+           [Claude] Was: display: inline-flex; */
         a {
             height: 100%;
-            display: inline-flex;
+            display: flex;
             align-items: center;
             color: var(--body-text-color);
             gap: var(--menu-icon-separation);
@@ -227,6 +234,20 @@
     display: flex;
     flex-direction: row;
     gap: var(--spacing-sm);
+
+    /* michael.gr: [Claude] Spread the social icons over the width of the logo, which is fixed at 210px in left.html. */
+    @include respond(md) {
+        width: 210px;
+        justify-content: space-between;
+    }
+
+    /* michael.gr: [Claude] Make the links and the icons block-level, so that the row is exactly as tall as the icons,
+       [Claude] because inline boxes sit on a line box of the font, which leaves space below the icons that would change
+       [Claude] the visible gaps around the row with the font. */
+    a,
+    svg {
+        display: block;
+    }
 
     svg {
         width: 24px;
