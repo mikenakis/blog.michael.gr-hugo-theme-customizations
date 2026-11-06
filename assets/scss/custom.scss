@@ -69,27 +69,41 @@ code.language-CSharp {
     }
 }
 
-/* michael.gr: [Claude] Make the cookie banner brighter than a card. */
+/* michael.gr: [Claude] Make the cookie banner brighter than a card.
+   [Claude] The color is kept in --cookie-banner-background, because the hover ring of the primary button needs it. */
 .cookie-banner__content {
-    background: oklab(from var(--card-background) calc(l + 0.044) a b);
+    --cookie-banner-background: oklab(from var(--card-background) calc(l + 0.044) a b);
+    background: var(--cookie-banner-background);
 }
 
-/* michael.gr: */
+/* michael.gr: [Claude] Draw the primary button in the text color.
+   [Claude] Hovering moves the button away from the background: darker in light mode, white in dark mode.
+   [Claude] In dark mode the text color is already near white, so the change of color alone is hardly visible; hovering
+   [Claude] therefore also draws a ring in the text color around the button, separated from it by a gap in the color of
+   [Claude] the banner. */
 .cookie-btn--primary {
     background: var(--card-text-color-main);
     color: var(--card-background);
 
     &:hover {
-        background: var(--card-text-color-secondary);
+        background: oklab(from var(--card-text-color-main) calc(l - 0.2) a b);
+        box-shadow: 0 0 0 2px var(--cookie-banner-background), 0 0 0 4px var(--card-text-color-main);
     }
 }
 
-/* michael.gr: */
+[data-scheme="dark"] .cookie-btn--primary:hover {
+    background: white;
+}
+
+/* michael.gr: [Claude] Give the secondary buttons a border in a text color, which is more visible than the separator
+   [Claude] color of the theme; their fill is transparent, as in the theme.
+   [Claude] On hover, the fill of the theme (--card-background-selected) is hardly lighter than the banner, so the
+   [Claude] buttons are filled with a translucent text color instead, which stands out in both modes. */
 .cookie-btn--secondary {
-    background: var(--card-background-selected);
     border-color: var(--card-text-color-tertiary);
 
     &:hover {
+        background: color-mix(in oklab, var(--card-text-color-main) 15%, transparent);
         border-color: var(--card-text-color-main);
     }
 }
@@ -105,9 +119,23 @@ code.language-CSharp {
     text-decoration: underline;
 }
 
-/* michael.gr: */
-.cookie-banner:has(.cookie-settings:not([aria-hidden="true"])) .cookie-banner__settings-link {
-    display: none;
+/* michael.gr: [Claude] Make the settings panel replace the rest of the banner while it is open, so that "Accept all"
+   [Claude] and "Save preferences" are never on screen together and each screen has exactly one primary button.
+   [Claude] "Cancel" hides the settings panel (`hideSettings` in cookies.ts), which brings the rest of the banner back.
+   [Claude] The panel is then the only thing in the banner, so it loses the separator line that the theme draws
+   [Claude] between it and the banner text. */
+.cookie-banner:has(.cookie-settings:not([aria-hidden="true"])) {
+    .cookie-banner__text,
+    .cookie-banner__actions,
+    .cookie-banner__settings-link {
+        display: none;
+    }
+
+    .cookie-settings {
+        flex-basis: 100%;
+        padding-top: 0;
+        border-top: none;
+    }
 }
 
 /* michael.gr: [Claude] Underline footer links on hover, the "Cookie settings" link included (see footer.html). */

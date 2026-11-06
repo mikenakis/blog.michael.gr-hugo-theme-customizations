@@ -156,13 +156,16 @@
 }
 
 [data-scheme="light"] {
-
+    /* michael.gr: [Claude] Make the browser draw its native controls (checkboxes, scroll bars, input fields) in the
+       [Claude] mode of the page; without `color-scheme`, it draws them in their light style in both modes. */
+    color-scheme: light;
 
     @import "partials/highlight/light.scss";
 }
 
 [data-scheme="dark"] {
-
+    /* michael.gr: [Claude] See `color-scheme: light` above. */
+    color-scheme: dark;
 
     @import "partials/highlight/dark.scss";
 }
