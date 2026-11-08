@@ -77,7 +77,9 @@
         {{/* michael.gr: I have made the search box part of the main menu. */}}
         {{- with index (where .Site.Pages "Layout" "search") 0 }}
         <li class="menu-search">
-            <form action="{{ .RelPermalink }}" class="search-form widget"{{ with .OutputFormats.Get "json" }} data-json="{{ .RelPermalink }}"{{ end }}>
+            {{/* michael.gr: [Claude] This form has no `data-json` attribute, unlike the one in the theme, because search.html
+               loads the search index as a script. */}}
+            <form action="{{ .RelPermalink }}" class="search-form widget">
                 {{/* michael.gr: Move the focus to the text field when the user clicks anywhere in the search panel except on the search button, an option, or the label of an option. The `for` attribute does this for the "Search" label, and the `onmousedown` handler does it for the empty parts of the panel. Without them, those clicks would not reach the text field, because the panel look is now on the `<p>` instead of the `<input>` (see custom.scss). */}}
                 <p onmousedown="if( !event.target.closest( 'label, input, button' ) ) { event.preventDefault(); this.querySelector( '#search-keyword' ).focus(); }">
                     <label for="search-keyword">{{ T "search.title" }}</label>

@@ -1,3 +1,7 @@
+/* michael.gr: [Claude] Import createElement, which the JSX below compiles into calls to.
+   The global that main.ts defines does not exist yet when this script starts before DOMContentLoaded. */
+import createElement from './createElement';
+
 interface pageData {
     title: string,
     date: string,
@@ -249,9 +253,9 @@ class Search {
 
     public async getData() {
         if (!this.data) {
-            /// Not fetched yet
-            const jsonURL = this.form.dataset.json as string;
-            this.data = await fetch(jsonURL).then(res => res.json());
+            /* michael.gr: [Claude] Take the search index from the global defined by the deferred script of search.html.
+               No fetch is awaited here, so a search requested by the address finishes before DOMContentLoaded. */
+            this.data = window.searchIndex;
             const parser = new DOMParser();
 
             for (const item of this.data) {
@@ -308,7 +312,8 @@ class Search {
 
     private handleQueryString() {
         const pageURL = new URL(window.location.toString());
-        const keywords = pageURL.searchParams.get('keyword') || '';
+        /* michael.gr: [Claude] Accept "q" as well as "keyword", because "q" is the name that tools tend to try first. */
+        const keywords = pageURL.searchParams.get('keyword') || pageURL.searchParams.get('q') || '';
         this.input.value = keywords;
         if (this.wholeWords) this.wholeWords.checked = pageURL.searchParams.get('whole') === '1';
         const anyWord = pageURL.searchParams.get('match') === 'any';
@@ -324,6 +329,10 @@ class Search {
 
     private static updateQueryString(keywords: string, wholeWords: boolean, anyWord: boolean, replaceState = false) {
         const pageURL = new URL(window.location.toString());
+
+        /* michael.gr: [Claude] Remove "q", because otherwise clearing the search box would leave the search of "q" in the
+           address, to run again on the next reload. */
+        pageURL.searchParams.delete('q');
 
         if (keywords === '') {
             pageURL.searchParams.delete('keyword')
@@ -379,26 +388,30 @@ class Search {
 declare global {
     interface Window {
         searchResultTitleTemplate: string;
+        searchIndex: pageData[];
     }
 }
 
-window.addEventListener('load', () => {
-    setTimeout(function () {
-        const searchForm = document.querySelector('.search-form') as HTMLFormElement,
-            searchInput = searchForm?.querySelector('input') as HTMLInputElement,
-            searchResultList = document.querySelector('.search-result--list') as HTMLDivElement,
-            searchResultTitle = document.querySelector('.search-result--title') as HTMLHeadingElement;
+function startSearch() {
+    const searchForm = document.querySelector('.search-form') as HTMLFormElement,
+        searchInput = searchForm?.querySelector('input') as HTMLInputElement,
+        searchResultList = document.querySelector('.search-result--list') as HTMLDivElement,
+        searchResultTitle = document.querySelector('.search-result--title') as HTMLHeadingElement;
 
-        if (!searchForm || !searchInput || !searchResultList || !searchResultTitle) return;
+    if (!searchForm || !searchInput || !searchResultList || !searchResultTitle) return;
 
-        new Search({
-            form: searchForm,
-            input: searchInput,
-            list: searchResultList,
-            resultTitle: searchResultTitle,
-            resultTitleTemplate: window.searchResultTitleTemplate
-        });
-    }, 0);
-})
+    new Search({
+        form: searchForm,
+        input: searchInput,
+        list: searchResultList,
+        resultTitle: searchResultTitle,
+        resultTitleTemplate: window.searchResultTitleTemplate
+    });
+}
+
+/* michael.gr: [Claude] Start right away instead of waiting for the "load" event.
+   The search then finishes before DOMContentLoaded, which is when the Cloudflare Browser Run service captures a page by
+   default. */
+startSearch();
 
 export default Search;

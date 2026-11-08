@@ -13,4 +13,4 @@
     {{- $result = $result | append $data -}}
 {{- end -}}
 
-{{ jsonify $result }}
+{{- return $result -}}

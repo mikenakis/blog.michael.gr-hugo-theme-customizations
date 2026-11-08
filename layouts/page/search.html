@@ -1,8 +1,11 @@
 {{ define "body-class" }}template-search{{ end }}
 {{ define "head" }}
-    {{- with .OutputFormats.Get "json" -}} 
-        <link rel="preload" href="{{ .RelPermalink }}" as="fetch" crossorigin="anonymous">
-    {{- end -}}
+    {{/* michael.gr: [Claude] The search index is loaded as a deferred script instead of being fetched, because
+    DOMContentLoaded waits for deferred scripts but not for a fetch.
+    The results of a search requested by the address then exist before DOMContentLoaded, which is when the Cloudflare
+    Browser Run service captures a page by default. */}}
+    {{- $searchIndex := partial "helper/search-index.html" . | jsonify | printf "window.searchIndex=%s;" | resources.FromString "search-index.js" | fingerprint -}}
+    <script defer src="{{ $searchIndex.RelPermalink }}" integrity="{{ $searchIndex.Data.Integrity }}"></script>
 {{ end }}
 {{ define "main" }}
 {{/* michael.gr: The search form has been moved to the main menu, in sidebar/left.html. */}}
