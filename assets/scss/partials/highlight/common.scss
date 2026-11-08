@@ -78,11 +78,11 @@ span.line {
 /* KeywordDeclaration       */ .chroma .kd  { color: var(--primary-foreground-color); font-weight: bold; } //private, public, static
 /* KeywordNamespace         */ .chroma .kn  { color: #FF00FF; }
 /* KeywordPseudo            */ .chroma .kp  { color: #FF00FF; }
-/* KeywordReserved          */ .chroma .kr  { color: #FF00FF; }
+/* KeywordReserved          */ .chroma .kr  { color: var(--primary-foreground-color); font-weight: bold; } // michael.gr: [Claude] JavaScript import, export, const, async, await
 /* KeywordType              */ .chroma .kt  { color: var(--primary-foreground-color); font-weight: bold; } //the var keyword
 /* Name                     */ .chroma .n   { color: color-mix(in oklab, var(--primary-foreground-color) 50%, #FF0 50%); } //regular text
 /* NameAttribute            */ .chroma .na  { color: color-mix(in oklab, var(--primary-foreground-color) 50%, #F80 50%); font-weight: bold }
-/* NameBuiltin              */ .chroma .nb  { color: #FF00FF; }
+/* NameBuiltin              */ .chroma .nb  { color: color-mix(in oklab, var(--primary-foreground-color) 50%, #0AF 50%); font-weight: bold; } // michael.gr: [Claude] JavaScript built-in names such as Error
 /* NameBuiltinPseudo        */ .chroma .bp  { color: #FF00FF; }
 /* NameClass                */ .chroma .nc  { color: color-mix(in oklab, var(--primary-foreground-color) 50%, #fa0 50%); } //class names, interface names
 /* NameConstant             */ .chroma .no  { color: #FF00FF; }
@@ -93,7 +93,7 @@ span.line {
 /* NameFunctionMagic        */ .chroma .fm  { color: #FF00FF; }
 /* NameLabel                */ .chroma .nl  { color: #FF00FF; }
 /* NameNamespace            */ .chroma .nn  { color: color-mix(in oklab, var(--primary-foreground-color) 50%, #fa0 50%); } //namespace names
-/* NameOther                */ .chroma .nx  { color: #FF00FF; }
+/* NameOther                */ .chroma .nx  { color: color-mix(in oklab, var(--primary-foreground-color) 50%, #FF0 50%); } // michael.gr: [Claude] JavaScript identifiers, including class names, which the JavaScript lexer does not tell apart
 /* NameProperty             */ .chroma .py  { color: #FF00FF; }
 /* NameTag                  */ .chroma .nt  { color: var(--primary-foreground-color); font-weight: bold; }
 /* NameVariable             */ .chroma .nv  { color: var(--primary-foreground-color); font-weight: bold; }
@@ -105,14 +105,14 @@ span.line {
 /* LiteralDate              */ .chroma .ld  { color: #FF00FF; }
 /* LiteralString            */ .chroma .s   { color: color-mix(in oklab, var(--primary-foreground-color) 50%, #888 50%); }
 /* LiteralStringAffix       */ .chroma .sa  { color: #FF00FF; }
-/* LiteralStringBacktick    */ .chroma .sb  { color: #FF00FF; }
+/* LiteralStringBacktick    */ .chroma .sb  { color: color-mix(in oklab, var(--primary-foreground-color) 50%, #888 50%); } // michael.gr: [Claude] JavaScript template strings
 /* LiteralStringChar        */ .chroma .sc  { color: #FF00FF; }
 /* LiteralStringDelimiter   */ .chroma .dl  { color: #FF00FF; }
 /* LiteralStringDoc         */ .chroma .sd  { color: #FF00FF; }
-/* LiteralStringDouble      */ .chroma .s2  { color: #FF00FF; }
+/* LiteralStringDouble      */ .chroma .s2  { color: color-mix(in oklab, var(--primary-foreground-color) 50%, #888 50%); } // michael.gr: [Claude] JavaScript double-quoted strings
 /* LiteralStringEscape      */ .chroma .se  { color: #FF00FF; }
 /* LiteralStringHeredoc     */ .chroma .sh  { color: #FF00FF; }
-/* LiteralStringInterpol    */ .chroma .si  { color: #FF00FF; }
+/* LiteralStringInterpol    */ .chroma .si  { color: var(--primary-foreground-color); font-weight: bold; } // michael.gr: [Claude] the ${ and } markers of JavaScript template strings
 /* LiteralStringOther       */ .chroma .sx  { color: #FF00FF; }
 /* LiteralStringRegex       */ .chroma .sr  { color: color-mix(in oklab, var(--primary-foreground-color) 50%, #888 50%); }
 /* LiteralStringSingle      */ .chroma .s1  { color: #FF00FF; }
@@ -121,7 +121,7 @@ span.line {
 /* LiteralNumberBin         */ .chroma .mb  { color: #FF00FF; }
 /* LiteralNumberFloat       */ .chroma .mf  { color: #FF00FF; }
 /* LiteralNumberHex         */ .chroma .mh  { color: #FF00FF; }
-/* LiteralNumberInteger     */ .chroma .mi  { color: #FF00FF; }
+/* LiteralNumberInteger     */ .chroma .mi  { color: color-mix(in oklab, var(--primary-foreground-color) 50%, #888 50%); } // michael.gr: [Claude] JavaScript integers
 /* LiteralNumberIntegerLong */ .chroma .il  { color: #FF00FF; }
 /* LiteralNumberOct         */ .chroma .mo  { color: #FF00FF; }
 /* Operator                 */ .chroma .o   { color: var(--primary-foreground-color); font-weight: bold; }

@@ -10,6 +10,10 @@
 
 /* michael.gr: code block tab size from https://discourse.gohugo.io/t/is-using-pygmentsuseclasses-true-affecting-the-tabwidth/31648/2 */
 /*pre.chroma {*/
+/* michael.gr: [Claude] Browsers show a tab as 8 columns, so this rule covers every language without a rule of its own. */
+code {
+  tab-size:4;
+}
 code.language-xml {
   -moz-tab-size:2;
   -o-tab-size:2;
