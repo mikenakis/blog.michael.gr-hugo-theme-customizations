@@ -1,3 +1,6 @@
+{{- $style := resources.Get "scss/partials/comments/intensedebate.scss" | toCSS | minify | resources.Fingerprint "sha256" -}}
+<link rel="stylesheet" href="{{ $style.RelPermalink }}">
+
 {{/* michael.gr: one wrapper, so that the flex gap of <main> does not separate the notice from the comments. */}}
 <div class="comments-intensedebate">
 <p class="comments-cookie-notice">Commenting requires third-party cookies to be enabled in your browser.</p>
